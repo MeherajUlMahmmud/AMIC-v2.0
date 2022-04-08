@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 
 
@@ -28,7 +28,8 @@ def show_to_doctor(allowed_roles=[]):
             if request.user.is_doctor:
                 return view_func(request, *args, **kwargs)
             else:
-                return HttpResponse("You are not authorized to view this page")
+                # return HttpResponse("You are not authorized to view this page")
+                return render(request, '401.html')
 
         return wrapper_func
 
@@ -45,7 +46,7 @@ def show_to_patient(allowed_roles=[]):
             if request.user.is_patient:
                 return view_func(request, *args, **kwargs)
             else:
-                return HttpResponse("You are not authorized to view this page")
+                return render(request, '401.html')
 
         return wrapper_func
 
