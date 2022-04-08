@@ -5,6 +5,9 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 
 from appointment_control.models import AppointmentModel
+from article_control.models import ArticleModel
+from patient_community_control.models import CommunityPostModel
+from emergency_service_control.models import BloodRequestModel, PlasmaRequestModel
 from user_control.decorators import *
 from user_control.forms import *
 from user_control.utils import calculate_age
@@ -199,45 +202,44 @@ def doctor_profile_view(request, pk):  # The doctor's profile page
 
     :return: renders the doctor's profile page
     """
-    try:
-        is_self = False  # The user is not the doctor
-        user = UserModel.objects.get(id=pk)  # Get the user
+    is_self = False  # The user is not the doctor
+    user = UserModel.objects.get(id=pk)  # Get the user
 
-        if request.user == user:  # If the user is the doctor
-            is_self = True  # Set the flag to True
+    if request.user == user:  # If the user is the doctor
+        is_self = True  # Set the flag to True
 
-        profile = DoctorModel.objects.get(user=user)  # Get the doctor's profile
+    profile = DoctorModel.objects.get(user=user)  # Get the doctor's profile
 
-        date_joined = calculate_age(user.date_joined)  # Get the age of the user account
+    date_joined = calculate_age(user.date_joined)  # Get the age of the user account
 
-        incomplete_profile = False
-        if not profile.bio or not profile.gender or not profile.blood_group or not profile.date_of_birth or not \
-                profile.phone or not profile.NID or not profile.specialization or not profile.BMDC_regNo:
-            incomplete_profile = True
+    incomplete_profile = False
+    if not profile.bio or not profile.gender or not profile.blood_group or not profile.date_of_birth or not \
+            profile.phone or not profile.NID or not profile.specialization or not profile.BMDC_regNo:
+        incomplete_profile = True
 
-        completed_appointments = AppointmentModel.objects.filter(doctor=profile, is_complete=True)
+    articles = ArticleModel.objects.filter(author=user)[:4]
+    completed_appointments = AppointmentModel.objects.filter(doctor=profile, is_complete=True)
 
-        is_pending = False
-        if request.user.is_patient:
-            patient = PatientModel.objects.get(user=request.user)
-            appointments = AppointmentModel.objects.filter(patient=patient, doctor=profile, is_accepted=False,
-                                                        is_canceled=False, is_complete=False)
-            if appointments.count() > 0:
-                is_pending = True
+    is_pending = False
+    if request.user.is_patient:
+        patient = PatientModel.objects.get(user=request.user)
+        appointments = AppointmentModel.objects.filter(patient=patient, doctor=profile, is_accepted=False,
+                                                       is_canceled=False, is_complete=False)
+        if appointments.count() > 0:
+            is_pending = True
 
-        context = {  # Context to render the view
-            'user': user,  # The user
-            'is_self': is_self,  # The flag
-            'profile': profile,  # The doctor's profile
-            'date_joined': date_joined,  # The account age
-            'completed_appointments': completed_appointments.count(),
-            'incomplete_profile': incomplete_profile,
-            'is_pending': is_pending,
-        }
-        return render(request, "pages/user-control/doctor-profile.html", context)  # Render the view
-    except:
-        # render the 404 page
-        return render(request, '404.html')
+    context = {  # Context to render the view
+        'user': user,  # The user
+        'is_self': is_self,  # The flag
+        'profile': profile,  # The doctor's profile
+        'date_joined': date_joined,  # The account age
+        'completed_appointments': completed_appointments.count(),
+        'incomplete_profile': incomplete_profile,
+        'articles': articles,
+        'total_posts': articles.count(),
+        'is_pending': is_pending,
+    }
+    return render(request, "pages/user-control/doctor-profile.html", context)  # Render the view
 
 
 @login_required(login_url='login')
@@ -267,9 +269,12 @@ def patient_profile_view(request, pk):  # The patient's profile page
     if profile.date_of_birth:  # If the patient has a date of birth
         age = calculate_age(profile.date_of_birth)  # Get the age of the patient
 
+    community_posts = CommunityPostModel.objects.filter(author=user)[:4]
     completed_appointments = AppointmentModel.objects.filter(patient=profile, is_complete=True)
 
     user = UserModel.objects.get(id=pk)
+    # blood_requests = BloodRequestModel.objects.filter(user=user).order_by('-posted_on')
+    # plasma_requests = PlasmaRequestModel.objects.filter(user=user).order_by('-posted_on')
 
     incomplete_profile = False
     if not profile.gender or not profile.blood_group or not profile.date_of_birth or not \
@@ -284,7 +289,13 @@ def patient_profile_view(request, pk):  # The patient's profile page
         'profile': profile,  # The patient's profile
         'date_joined': date_joined,  # The account age
         'incomplete_profile': incomplete_profile,
+        'community_posts': community_posts,
         'completed_appointments': completed_appointments.count(),
+        'total_posts': community_posts.count(),
+        # 'blood_requests': blood_requests[:4],
+        # 'total_blood_requests': blood_requests.count(),
+        # 'plasma_requests': plasma_requests[:4],
+        # 'total_plasma_requests': plasma_requests.count(),
     }
     return render(request, "pages/user-control/patient-profile.html", context)  # Render the view
 
