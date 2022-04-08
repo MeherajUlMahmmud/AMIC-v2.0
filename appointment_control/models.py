@@ -29,6 +29,7 @@ class AppointmentModel(models.Model):
     meet_link = models.CharField(max_length=255, null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class PrescriptionModel(models.Model):
@@ -42,4 +43,5 @@ class PrescriptionModel(models.Model):
     appointment = models.ForeignKey(
         AppointmentModel, on_delete=models.SET_NULL, null=True, blank=True)
     details = models.TextField(null=True, blank=True)
-    created_on = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
