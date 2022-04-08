@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} - Reject Appointment{% endblock %}
+
+{% block content %}
+
+<section id="blogArchive">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="blog-breadcrumbs-area">
+                <div class="container">
+                    <div class="blog-breadcrumbs-left">
+                        <h2>Reject Appointment</h2>
+                    </div>
+                    <div class="blog-breadcrumbs-right">
+                        <ol class="breadcrumb">
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="container">
+                <div class="row mb-5">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="blog-content blog-details">
+                            <h3>Do you want to reject
+                                <u>
+                                    <a href="{% url 'appointment-details' appointment.id %}">
+                                    the Appointment Request by {{ appointment.patient.user.name }}</a>
+                                </u> ?
+                            </h3>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <button
+                                                class="btn btn-danger text-center"
+                                                type="submit">
+                                            <i class="fa fa-trash"></i>
+                                            <span>Reject</span>
+                                        </button>
+                                        <a href="{% url 'appointment-details' appointment.id %}"
+                                           class="btn btn-secondary text-center">
+                                            <i class="fa fa-remove"></i>
+                                            <span>Cancel</span>
+                                        </a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} - Update Appointment{% endblock %}
+
+{% block content %}
+
+<section class="page-title bg-1">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block text-center">
+                    <h1 class="text-capitalize mb-5 text-lg">Accept Appointment</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="appointment section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <form method="post">
+
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Requested by</label>
+                                <h3>{{ appointment.patient.user.name }}</h3>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Department</label>
+                                <h3>{{ appointment.doctor.specialization }}</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Appointment Date</label>
+                                {{ form.date|add_class:"form-control" }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Appointment Time (Select time)</label>
+                                {{ form.time|add_class:"form-control" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Patient Name</label><br/>
+                                <a class="h3" href="{% url 'patient-profile' appointment.patient.user.id %}">
+                                    {{ appointment.patient.user.name }}
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <h3>{{ appointment.patient.phone }}</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Meeting Link</label>
+                                {{ form.meet_link|add_class:"form-control" }}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="text-center my-3">
+                        <button class="btn btn-main btn-round-full">
+                            Accept Appointment <i class="icofont-simple-right ml-2"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

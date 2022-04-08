@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} - Patient Community{% endblock %}
+
+{% block content %}
+
+<section class="page-title bg-1">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block text-center">
+                    <span class="text-white">Community Portal</span>
+                    <h1 class="text-capitalize mb-5 text-lg">{{ task }} Post</h1>
+
+                    <!-- <ul class="list-inline breadcumb-nav">
+                      <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
+                      <li class="list-inline-item"><span class="text-white">/</span></li>
+                      <li class="list-inline-item"><a href="#" class="text-white-50">Our blog</a></li>
+                    </ul> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <form class="p-3" enctype="multipart/form-data" method="post">
+                        <h3 class="text-md text-center mb-3">{{ task }} Post</h3>
+
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Post Title</label>
+                                    {{ form.title|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Post Image</label>
+                                    {% if 'Update' in task %}
+                                    {% if post.image %}
+                                    <p>Available Image</p>
+                                    <a href="{{ post.image.url }}" target="_blank">
+                                        <img src="{{ post.image.url }}" style="width:100px; height:100px;"/>
+                                    </a>
+                                    {% else %}
+                                    <p>No Image Available</p>
+                                    {% endif %}
+                                    {% endif %}
+                                    {{ form.image|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Post Content</label>
+                                    {{ form.content|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        {{ form.non_field_errors }}
+
+                        <div class="text-center">
+                            <button class="btn btn-main btn-round-full" type="submit">
+                                {{ task }} Post</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

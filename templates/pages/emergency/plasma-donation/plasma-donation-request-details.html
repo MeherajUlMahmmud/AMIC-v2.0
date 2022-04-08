@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} - Plasma Request{% endblock %}
+
+{% block content %}
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="blog-breadcrumbs-area">
+                    <div class="blog-breadcrumbs-left">
+                        <h2>Plasma Request Details</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12">
+                {% if my_post %}
+                <a href="{% url 'plasma-donation-update-request' post.id %}"
+                    class="btn btn-main btn-round-full text-center">
+                    <i class="far fa-edit"></i> Update Plasma Request
+                </a>
+                {% endif %}
+            </div>
+            <div class="col-lg-3 col-md-12">
+                {% if my_post %}
+                <a href="{% url 'plasma-donation-delete-request' post.id %}"
+                    class="btn btn-main btn-round-full text-center">
+                    <i class="fa fa-trash"></i> Delete Plasma Request
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-12">
+                <div class="blog-breadcrumbs-right">
+                    <ol class="breadcrumb">
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-12">
+                <div class="row mb-5">
+                    <div class="col-lg-6">
+                        <div class="m-2">
+                            <p class="h2 text-center text-danger">{{ post.blood_group }}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        {% if post.is_emergency %}
+                        <div class="m-2">
+                            <p class="h3 text-center btn btn-outline-danger">Emergency</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-3">
+                        {% if post.is_active %}
+                        <div class="m-2">
+                            <form method="GET">
+                                <input class="btn btn-danger btn-round-full" name="disable_req" type="submit"
+                                    title="This request will not be visible to others" value="Disable Request" />
+                            </form>
+                        </div>
+                        {% else %}
+                        <div class="m-2">
+                            <form method="GET">
+                                <input class="btn btn-success btn-round-full" name="activate_req" type="submit"
+                                    title="Make this request visible to others" value="Activate Request" />
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h4>Patient Name:
+                            <span class="text-color-2">
+                                {{ post.patient_name }}
+                            </span>
+                        </h4>
+                        <h4>Patient Gender:
+                            <span class="text-color-2">
+                                {{ post.gender }}
+                            </span>
+                        </h4>
+                        <h4>Blood Quantity:
+                            <span class="text-color-2">
+                                {{ post.quantity }} Unit(s)
+                            </span>
+                        </h4>
+                        <h4>Needed Within:
+                            <span class="text-color-2">
+                                {{ post.needed_within }}
+                            </span>
+                        </h4>
+                        <p>Posted by <a href="{% url 'patient-profile' post.user.id ">{{ post.user.name }}</a>,
+                            {{ post.created_at|timesince }} ago</p>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <h3>Contact Information</h3>
+                        <h4>Phone:
+                            <span class="text-color-2">
+                                {{ post.phone }}
+                            </span>
+                        </h4>
+                        <h4>Location:
+                            <span class="text-color-2">
+                                {{ post.location }}
+                            </span>
+                        </h4>
+                        <h4>Note:
+                            <span class="text-color-2">
+                                {{ post.note }}
+                            </span>
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <iframe width="100%" height="500" frameborder="0" scrolling="no" marginheight="0"
+                            marginwidth="0" src={{ location_link|safe }}></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

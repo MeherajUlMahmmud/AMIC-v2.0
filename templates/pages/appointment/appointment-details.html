@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} - Appointment Information{% endblock %}
+
+{% block content %}
+
+<section class="page-title bg-1">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block text-center">
+                    <h1 class="text-capitalize mb-5 text-lg">Appointment Details</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-lg-12">
+                <h2>Appointment Status:
+                    {% if is_upcoming %}
+                    <span class="text-secondary">Upcoming</span>
+                    {% elif is_pending %}
+                    <span class="text-secondary">Pending</span>
+                    {% elif is_complete %}
+                    <span class="text-success">Completed</span>
+                    {% endif %}
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Doctor:
+                    <a href="{% url 'doctor-profile' appointment.doctor.id %}" class="text-color-2">
+                        {{ appointment.doctor.user.name }}
+                    </a>
+                </h3>
+                <h3 class="my-3">Department: <span class="text-color-2">{{ appointment.doctor.specialization }}</span>
+                </h3>
+                <h3 class="my-3">Date: <span class="text-color-2">{{ appointment.date }}</span></h3>
+                <h3 class="my-3">Time: <span class="text-color-2">
+                    {% if appointment.time %}
+                    {{ appointment.time }}
+                    {% else %}
+                    Not Yet Specified
+                    {% endif %}
+                </span>
+                </h3>
+                <h3 class="my-3">Meeting Link:
+                    {% if appointment.meet_link %}
+                    <a href="{{ appointment.meet_link }}" target="_blank" class="text-color-2">
+                        {{ appointment.meet_link }}
+                    </a>
+                    {% else %}
+                    <span class="text-color-2">Not Yet Specified</span>
+                    {% endif %}
+                </h3>
+                <h3 class="my-3">
+                    {% if appointment.notes %}
+                    Notes: <span class="text-color-2">
+                        {{ appointment.notes }}
+                    </span>
+                    {% endif %}
+                </h3>
+            </div>
+            {% if request.user.is_patient and is_pending %}
+            <div class="col-lg-6 text-center">
+                <a href="{% url 'patient-appointment-update' appointment.id %}"
+                   class="btn btn-danger btn-main btn-round-full mt-3">Update Appointment</a>
+                <br/>
+                <a href="{% url 'appointment-delete' appointment.id %}"
+                   class="btn btn-main-2 btn-round-full mt-3">Delete Appointment</a>
+            </div>
+            {% elif request.user.is_doctor and is_pending %}
+            <div class="col-lg-6 text-center">
+                <a href="{% url 'doctor-appointment-update' appointment.id %}"
+                   class="btn btn-success btn-round-full mt-3">
+                    Accept Appointment
+                </a><br/>
+                <a href="{% url 'appointment-reject' appointment.id %}"
+                   class="btn btn-danger btn-round-full mt-3">
+                    Reject Appointment
+                </a>
+            </div>
+            {% elif request.user.is_doctor and is_upcoming %}
+            <div class="col-lg-6">
+                <div class="text-center">
+                    <a href="{% url 'write-prescription' appointment.id %}"
+                       class="btn btn-success btn-round-full mt-3" type="submit">
+                        Prescribe patient
+                    </a>
+                </div>
+            </div>
+            {% elif is_complete %}
+            <div class="col-lg-6 ">
+                <div>
+                    <h3 class="text-center">Prescription</h3>
+                    <div class="card rounded">{{ prescription.details|linebreaks }}</div>
+                </div>
+                <div class="text-center">
+                    <a href="{% url 'pdf-view' appointment.id %}" target="_blank"
+                       class="btn btn-success btn-round-full mt-3" type="submit">
+                        Download Prescription
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

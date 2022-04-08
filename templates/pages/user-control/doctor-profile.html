@@ -25,11 +25,12 @@
             <div class="col-lg-4 col-md-6">
                 <div class="doctor-img-block">
                     {% if profile.image %}
-                    <img src="{{ profile.image.url }}" alt="{{ user.name }}" class="img-fluid w-100">
+                    <img src="{{ profile.image.url }}" alt="{{ user.name }}" class="img-fluid w-100" height="350px"
+                        width="100px">
 
                     {% else %}
                     <img src="{% static 'images/placeholders/user-placeholder.jpg' %}" alt="{{ user.name }}"
-                         class="img-fluid w-100">
+                        class="img-fluid w-100">
                     {% endif %}
 
 
@@ -75,7 +76,7 @@
                     </a>
                     {% endif %}
 
-                    <hr/>
+                    <hr />
 
                     <h2 class="text-md">Stats</h2>
                     <div class="divider my-4"></div>
@@ -87,13 +88,13 @@
                     </div>
 
                     {% if request.user.is_patient and not is_pending %}
-                    <hr/>
-                    <a href="{% url 'make-appointment' user.id %}"
-                       class="btn btn-main-2 btn-round-full mt-3">Make an Appointment With Me
+                    <hr />
+                    <a href="{% url 'make-appointment' user.id %}" class="btn btn-main-2 btn-round-full mt-3">Make an
+                        Appointment With Me
                         <i class="icofont-simple-right ml-2"></i>
                     </a>
                     {% elif request.user.is_patient and is_pending %}
-                    <hr/>
+                    <hr />
                     <button class="btn btn-main-2 btn-round-full mt-3" disabled>
                         Make an Appointment With Me
                         <i class="icofont-simple-right ml-2"></i>
@@ -103,7 +104,7 @@
                 </div>
             </div>
         </div>
-        <hr/>
+        <hr />
 
         <h3 class="my-3">Articles</h3>
 
@@ -115,28 +116,25 @@
             {% for article in articles %}
             <div class="col-lg-6 col-md-6">
                 <div class="doctor-img-block">
-                    {% if article.article_image %}
-                    <img src="{{ article.article_image.url }}" alt="{{ article.article_title }}"
-                         class="img-fluid w-100">
+                    {% if article.image %}
+                    <img src="{{ article.image.url }}" alt="{{ article.title }}" class="img-fluid w-100">
 
                     {% else %}
                     <img src="{% static 'images/placeholders/article-image-placeholder.jpg' %}"
-                         alt="{{ article.article_title }}"
-                         class="img-fluid w-100">
+                        alt="{{ article.title }}" class="img-fluid w-100">
                     {% endif %}
 
 
                     <div class="info-block mt-4">
                         <span class="text-black text-capitalize mr-3">
-                            <i class="icofont-calendar mr-1"></i> {{ article.article_date_posted|date:"d N Y" }}
+                            <i class="icofont-calendar mr-1"></i> {{ article.created_at|date:"d N Y" }}
                         </span>
                         <p class="mb-1">
-                            <span class="h3">{{ article.article_title }}</span>
+                            <span class="h3">{{ article.title }}</span>
                         </p>
 
                         <div class="text-center">
-                            <a class="btn btn-main btn-round-full my-3"
-                               href="{% url 'article-details' article.article_slug %}">
+                            <a class="btn btn-main btn-round-full my-3" href="{% url 'article-details' article.slug %}">
                                 Read More <i class="icofont-simple-right ml-2"></i>
                             </a>
                         </div>

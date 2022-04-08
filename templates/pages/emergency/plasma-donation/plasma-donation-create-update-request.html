@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} - {{ task }} Plasma Request{% endblock %}
+
+{% block content %}
+
+
+<section id="blogArchive">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="blog-breadcrumbs-area">
+                <div class="container">
+                    <div class="blog-breadcrumbs-left">
+                        <h2>{{ task }} Plasma Request</h2>
+                    </div>
+                    <div class="blog-breadcrumbs-right">
+                        <ol class="breadcrumb">
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-12 col-md-12">
+                <form method="post">
+
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Patient Name</label>
+                                {{ form.patient_name|add_class:"form-control" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Gender</label>
+                                {{ form.gender|add_class:"form-control" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Blood Group</label>
+                                {{ form.blood_group|add_class:"form-control" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                {{ form.quantity|add_class:"form-control" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Location</label>
+                                {{ form.location|add_class:"form-control" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                {{ form.is_emergency }}
+                                <label>Urgently Needed</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Needed Within</label>
+                                {{ form.needed_within|add_class:"form-control" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Phone</label>
+                                {{ form.phone|add_class:"form-control" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Additional Note (Optional)</label>
+                                {{ form.note|add_class:"form-control" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    {{ form.non_field_errors }}
+
+
+                    <div class="text-center">
+                        <button class="btn btn-main btn-round-full" type="submit">
+                            {{ task }} Request</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

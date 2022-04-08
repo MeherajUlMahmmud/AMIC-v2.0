@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} - {{ task }} Article{% endblock %}
+
+{% block content %}
+
+<section class="page-title bg-1">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block text-center">
+                    <span class="text-white">Article Portal</span>
+                    <h1 class="text-capitalize mb-5 text-lg">{{ task }} Article</h1>
+
+                    <ul class="list-inline breadcumb-nav">
+                        <li class="list-inline-item">
+                            <a href="{% url 'article-home' %}" class="text-white">
+                                Article Home
+                            </a>
+                        </li>
+                        <li class="list-inline-item"><span class="text-white">/</span></li>
+                        {% if "Update" in task %}
+                        <li class="list-inline-item">
+                            <a href="{% url 'article-details' article.slug %}" class="text-white">
+                                Article Details
+                            </a>
+                        </li>
+                        <li class="list-inline-item"><span class="text-white">/</span></li>
+                        {% endif %}
+                        <li class="list-inline-item text-white-50">Update Article</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="row">
+
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <form class="p-3" enctype="multipart/form-data" method="post">
+                        <h3 class="text-md text-center mb-3">{{ task }} Article</h3>
+
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Article Title</label>
+                                    {{ form.title|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Article Subtitle (Optional)</label>
+                                    {{ form.subtitle|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Article category</label>
+                                    {{ form.category|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Article Image</label>
+                                    {{ form.image|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Article Content</label>
+                                    {{ form.content|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn btn-main btn-round-full" type="submit">
+                                {{ task }} Article
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

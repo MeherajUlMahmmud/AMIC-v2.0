@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} - {{ post.title }}{% endblock %}
+
+{% block content %}
+
+<section class="page-title bg-1">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block text-center">
+                    <a class="text-white" href="{% url 'advisor-home' %}">Health Advisor Portal</a>
+                    <h1 class="text-capitalize mb-5 text-lg">{{ post.title }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section blog-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-lg-12 mb-5">
+                        <div class="single-blog-item">
+                            {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid">
+
+
+                            {% else %}
+                            <img src="{% static 'images/placeholders/article-image-placeholder.jpg' %}"
+                                alt="{{ post.title }}" class="img-fluid">
+                            {% endif %}
+
+                            <div class="blog-item-content mt-5">
+                                <div class="blog-item-meta mb-3">
+                                    <span class="text-black text-capitalize mr-3">
+                                        <i class="icofont-calendar mr-2"></i> {{ post.created_at|date:"d N Y" }}
+                                    </span>
+
+                                    <a href="{% url 'doctor-profile' post.author.id %}" class="text-capitalize mr-3">
+                                        <i class="fa fa-user mr-2"></i> {{ post.author.name }}
+                                    </a>
+                                </div>
+
+                                <h2 class="mb-4 text-md">
+                                    {{ post.title }}
+                                </h2>
+
+                                <p class="lead mb-4">{{ post.content|linebreaks }}</p>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
+                    {% if my_post %}
+                    <div class="row m-3">
+                        <a class="btn btn-primary btn-round-full" href="{% url 'advisor-post-update' post.slug %}">
+                            <i class="far fa-edit"></i> Update Post
+                        </a>
+                    </div>
+                    <div class="row m-3">
+                        <a class="btn btn-danger btn-round-full" href="{% url 'advisor-post-delete' post.slug %}">
+                            <i class="fa fa-trash"></i> Delete Post
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    <div class="sidebar-widget search  mb-3 ">
+                        <h5>Search Here</h5>
+                        <form class="search-form">
+                            <input type="text" class="form-control" name="q" placeholder="Search" />
+                            <i class="ti-search"></i>
+                        </form>
+                    </div>
+
+
+                    <div class="sidebar-widget latest-post mb-3">
+                        <h5>Latest Posts</h5>
+                        {% for post in latest_posts %}
+                        <div class="py-2">
+                            <span class="text-sm text-muted">{{ post.created_at|date:"d N Y" }}</span>
+                            <h6 class="my-2">
+                                <a href="{% url 'article-details' post.slug %}">
+                                    {{ post.title }}
+                                </a>
+                            </h6>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

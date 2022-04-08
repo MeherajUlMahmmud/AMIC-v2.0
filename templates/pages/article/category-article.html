@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} - Articles{% endblock %}
+
+{% block content %}
+
+<section class="page-title bg-1">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block text-center">
+                    <span class="text-white">Article Portal</span>
+                    <h1 class="text-capitalize mb-5 text-lg">{{ cat }} Articles</h1>
+
+                    <!-- <ul class="list-inline breadcumb-nav">
+                      <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
+                      <li class="list-inline-item"><span class="text-white">/</span></li>
+                      <li class="list-inline-item"><a href="#" class="text-white-50">Our blog</a></li>
+                    </ul> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="section blog-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row">
+
+                    {% if articles %}
+                    {% for article in articles %}
+                    <div class="col-lg-12 col-md-12 mb-5">
+                        <div class="blog-item">
+                            <div class="blog-thumb">
+                                {% if article.image %}
+                                <a href="{% url 'article-details' article.slug %}">
+                                    <img src="{{ article.image.url }}" alt="{{ article.title }}" class="img-fluid">
+                                </a>
+
+                                {% else %}
+                                <a href="{% url 'article-details' article.slug %}">
+                                    <img src="{% static 'images/placeholders/article-image-placeholder.jpg' %}"
+                                        alt="{{ article.title }}" class="img-fluid">
+                                </a>
+                                {% endif %}
+                            </div>
+
+                            <div class="blog-item-content">
+                                <div class="blog-item-meta mb-3 mt-4">
+                                    <a href="{% url 'category-articles' article.category %}"
+                                        class="text-color-2 text-capitalize mr-3">
+                                        <i class="icofont-book-mark mr-2"></i> {{ article.category }}
+                                    </a>
+
+                                    <span class="text-black text-capitalize mr-3">
+                                        <i class="icofont-calendar mr-1"></i> {{ article.created_at|date:"d N Y" }}
+                                    </span>
+
+                                    <a href="{% url 'doctor-profile' article.author.id %}" class="text-capitalize mr-3">
+                                        <i class="fa fa-user mr-2"></i> {{ article.author.name }}
+                                    </a>
+                                </div>
+
+                                <h2 class="mt-3 mb-3">
+                                    <a href="{% url 'article-details' article.slug %}">
+                                        {{ article.title }}
+                                    </a>
+                                </h2>
+
+                                <p class="mb-4">{{ article.content|truncatechars:250 }}</p>
+
+                                <a href="{% url 'article-details' article.slug %}"
+                                    class="btn btn-main btn-icon btn-round-full">
+                                    Read More <i class="icofont-simple-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <h2>No Articles Yet</h2>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+
+                {% if is_doctor %}
+                <a href="{% url 'post-article' %}" class="btn btn-main btn-round-full m-3"><i class="fa fa-plus"></i>
+                    <span> Post a New Article</span>
+                </a>
+                {% endif %}
+
+                <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
+
+                    <!--                    <div class="sidebar-widget search  mb-3 ">-->
+                    <!--                        <h5>Search Here</h5>-->
+                    <!--                        <form action="#" class="search-form">-->
+                    <!--                            <input type="text" class="form-control" placeholder="search">-->
+                    <!--                            <i class="ti-search"></i>-->
+                    <!--                        </form>-->
+                    <!--                    </div>-->
+
+                    <div class="sidebar-widget latest-post mb-3">
+                        <h5>Latest Articles</h5>
+                        {% for article in latest_articles %}
+                        <div class="py-2">
+                            <span class="text-sm text-muted">{{ article.date_posted|date:"d N Y" }}</span>
+                            <h6 class="my-2">
+                                <a href="{% url 'article-details' article.slug %}">
+                                    {{ article.title }}
+                                </a>
+                            </h6>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <hr />
+
+                    <div class="sidebar-widget category mb-3">
+                        <h5 class="mb-4">Categories</h5>
+
+                        <ul class="list-unstyled">
+                            {% for cat in categories %}
+                            <li class="align-items-center">
+                                <a href="{% url 'category-articles' cat.category %}">{{ cat }}</a>
+                                <!--                                <span>(14)</span>-->
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {% if articles.has_other_pages %}
+        <div class="row mt-5">
+            <div class="col-lg-8">
+                <nav class="pagination py-2 d-inline-block">
+                    <div class="nav-links">
+                        {% if articles.has_previous %}
+                        <a class="page-numbers" href="?page={{ articles.previous_page_number }}">
+                            <i class="icofont-thin-double-left"></i>
+                        </a>
+                        {% endif %}
+
+                        {% for i in articles.paginator.page_range %}
+                        {% if articles.number == i %}
+                        <span aria-current="page" class="page-numbers current">{{ i }}</span>
+                        {% else %}
+                        <a class="page-numbers" href="?page={{ i }}">{{ i }}</a>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if articles.has_next %}
+                        <li>
+                            <a class="page-numbers" href="?page={{ articles.next_page_number }}">
+                                <i class="icofont-thin-double-right"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </div>
+                </nav>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

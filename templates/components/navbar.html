@@ -15,6 +15,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'home' %}">Home</a>
                 </li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'article-home' %}">Articles</a></li>
                 {% if request.user.is_authenticated and request.user.is_doctor %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'doctor-appointment-home' %}">Appointments</a>
@@ -27,6 +28,28 @@
 
                 <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Pharmacy</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">COVID Test</a></li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Emergency <i class="icofont-thin-down"></i></a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdown02">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'blood-donation-home' %}">
+                                <i class="icofont-blood-drop"></i> Blood Donation
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'plasma-donation-home' %}">
+                                <i class="fas fa-hand-holding-medical"></i> Plasma Donation
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'home' %}">
+                                <i class="fas fa-hand-holding-medical"></i> Ambulance Service
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
                 {% if request.user.is_authenticated %}
                 <li class="nav-item dropdown">

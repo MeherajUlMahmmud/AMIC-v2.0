@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} - Appointments{% endblock %}
+
+{% block content %}
+
+<section class="page-title bg-1">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block text-center">
+                    <h1 class="text-capitalize mb-5 text-lg">Appointments</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="">Upcoming Appointments</h2>
+
+        {% if not upcoming_appointments %}
+        <h3 class="mx-3">No Upcoming Appointments</h3>
+        {% endif %}
+
+        <div class="row">
+            {% for appointment in upcoming_appointments %}
+            <div class="col-lg-4">
+                <div class="card rounded border p-3">
+                    <h3>Appointment with
+                        <span class="text-color-2">{{ appointment.doctor.user.name }}</span>
+                    </h3>
+                    <h4 class="my-2">In <span class="text-color-2 ">{{ appointment.doctor.specialization }}</span>
+                        Department
+                    </h4>
+                    <h4>On <span class="text-color-2">{{ appointment.date }}</span></h4>
+                    <h4>At <span class="text-color-2">{{ appointment.time }}</span></h4>
+                    <a href="{% url 'appointment-details' appointment.id %}" class="btn btn-main my-2">See More</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="row my-3">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4 text-center">
+            <a href="{% url 'appointment-doctors-list' %}" class="btn btn-main-2 btn-icon btn-round-full">
+                Make New Appointment <i class="icofont-simple-right ml-2"></i>
+            </a>
+        </div>
+        <div class="col-lg-4"></div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="">Pending Appointments</h2>
+
+        {% if not pending_appointments %}
+        <h3 class="mx-3">No Pending Appointments</h3>
+        {% endif %}
+
+        <div class="row">
+            {% for appointment in pending_appointments %}
+            <div class="col-lg-4">
+                <div class="card rounded border p-3">
+                    <h3>Requested appointment for
+                        <span class="text-color-2">{{ appointment.doctor.user.name }}</span>
+                    </h3>
+                    <h4 class="my-2">In <span class="text-color-2 ">{{ appointment.doctor.specialization }}</span>
+                        Department
+                    </h4>
+                    <h4>On <span class="text-color-2">{{ appointment.date }}</span></h4>
+                    <a href="{% url 'appointment-details' appointment.id %}" class="btn btn-main my-2">See More</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="">Completed Appointments</h2>
+
+        {% if not completed_appointments %}
+        <h3 class="mx-3">No Completed Appointments</h3>
+        {% endif %}
+
+        <div class="row">
+            {% for appointment in completed_appointments %}
+            <div class="col-lg-4">
+                <div class="card rounded border p-3">
+                    <h3>Appointment with
+                        <span class="text-color-2">{{ appointment.doctor.user.name }}</span>
+                    </h3>
+                    <h4 class="my-2">In <span class="text-color-2 ">{{ appointment.doctor.specialization }}</span>
+                        Department
+                    </h4>
+                    <h4>On <span class="text-color-2">{{ appointment.date }}</span></h4>
+                    <h4>At <span class="text-color-2">{{ appointment.time }}</span></h4>
+                    <a href="{% url 'appointment-details' appointment.id %}" class="btn btn-main my-2">See More</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="">Rejected Appointments</h2>
+
+        {% if not rejected_appointments %}
+        <h3 class="mx-3">No Rejected Appointments</h3>
+        {% endif %}
+
+        <div class="row">
+            {% for appointment in rejected_appointments %}
+            <div class="col-lg-4">
+                <div class="card rounded border p-3">
+                    <h3>Requested appointment for
+                        <span class="text-color-2">{{ appointment.doctor.user.name }}</span>
+                    </h3>
+                    <h4 class="my-2">In <span class="text-color-2 ">{{ appointment.doctor.specialization }}</span>
+                        Department
+                    </h4>
+                    <h4>On <span class="text-color-2">{{ appointment.date }}</span></h4>
+                    <a href="{% url 'appointment-details' appointment.id %}" class="btn btn-main my-2">See More</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section cta-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="cta-content">
+                    <div class="divider mb-4"></div>
+                    <h2 class="mb-5 text-lg">We are pleased to offer you the <span class="title-color">chance to have a
+                            healthy life</span>
+                    </h2>
+                    <a href="{% url 'appointment-doctors-list' %}" class="btn btn-main-2 btn-round-full">
+                        Get appointment<i class="icofont-simple-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

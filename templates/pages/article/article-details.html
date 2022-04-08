@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} - {{ article.title }}{% endblock %}
+{% block content %}
+
+
+<section class="page-title bg-1">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block text-center">
+                    <span class="text-white">Article Details</span>
+                    <h1 class="text-capitalize mb-5 text-lg">{{ article.title }}</h1>
+
+                    <!-- <ul class="list-inline breadcumb-nav">
+                      <li class="list-inline-item"><a href="index.html" class="text-white">Home</a></li>
+                      <li class="list-inline-item"><span class="text-white">/</span></li>
+                      <li class="list-inline-item"><a href="#" class="text-white-50">News details</a></li>
+                    </ul> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section blog-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-lg-12 mb-5">
+                        <div class="single-blog-item">
+                            {% if article.image %}
+                            <img src="{{ article.image.url }}" alt="{{ article.title }}" class="img-fluid">
+
+
+                            {% else %}
+                            <img src="{% static 'images/placeholders/article-image-placeholder.jpg' %}"
+                                alt="{{ article.title }}" class="img-fluid">
+                            {% endif %}
+
+                            <div class="blog-item-content mt-5">
+                                <div class="blog-item-meta mb-3">
+                                    <span class="text-color-2 text-capitalize mr-3">
+                                        <i class="icofont-book-mark mr-2"></i> {{ article.category }}
+                                    </span>
+
+                                    <span class="text-black text-capitalize mr-3">
+                                        <i class="icofont-calendar mr-2"></i> {{ article.created_at|date:"d N Y" }}
+                                    </span>
+
+                                    <a href="{% url 'doctor-profile' article.author.id %}" class="text-capitalize mr-3">
+                                        <i class="fa fa-user mr-2"></i> {{ article.author.name }}
+                                    </a>
+                                </div>
+
+                                <h2 class="mb-4 text-md">
+                                    {{ article.title }}
+                                </h2>
+
+                                <p class="lead mb-4">{{ article.content|linebreaks }}</p>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
+                    {% if my_article %}
+                    <div class="row m-3">
+                        <a class="btn btn-primary btn-round-full" href="{% url 'edit-article' article.slug %}">
+                            Update Article
+                        </a>
+                    </div>
+                    <div class="row m-3">
+                        <a class="btn btn-danger btn-round-full" href="{% url 'delete-article' article.slug %}">
+                            Delete Article
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    <!--                    <div class="sidebar-widget search  mb-3 ">-->
+                    <!--                        <h5>Search Here</h5>-->
+                    <!--                        <form action="#" class="search-form">-->
+                    <!--                            <input type="text" class="form-control" placeholder="search">-->
+                    <!--                            <i class="ti-search"></i>-->
+                    <!--                        </form>-->
+                    <!--                    </div>-->
+
+
+                    <div class="sidebar-widget latest-post mb-3">
+                        <h5>Latest Articles</h5>
+                        {% for article in latest_articles %}
+                        <div class="py-2">
+                            <span class="text-sm text-muted">{{ article.date_posted|date:"d N Y" }}</span>
+                            <h6 class="my-2">
+                                <a href="{% url 'article-details' article.slug %}">
+                                    {{ article.title }}
+                                </a>
+                            </h6>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="sidebar-widget category mb-3">
+                        <h5 class="mb-4">Categories</h5>
+
+                        <ul class="list-unstyled">
+                            {% for cat in categories %}
+                            <li class="align-items-center">
+                                <a href="{% url 'category-articles' cat.category %}">{{ cat }}</a>
+                                <!--                                <span>(14)</span>-->
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
