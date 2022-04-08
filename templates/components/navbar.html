@@ -1,0 +1,70 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navigation" id="navbar">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <h1><img src="{% static 'images/logoo.png' %}" alt="" class="img-fluid">AMIC</h1>
+        </a>
+
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarmain"
+            aria-controls="navbarmain" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icofont-navigation-menu"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarmain">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                {% if request.user.is_authenticated and request.user.is_doctor %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'doctor-appointment-home' %}">Appointments</a>
+                </li>
+                {% elif request.user.is_authenticated and request.user.is_patient %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'patient-appointment-home' %}">Appointments</a>
+                </li>
+                {% endif %}
+
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Pharmacy</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">COVID Test</a></li>
+
+                {% if request.user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">{{ request.user.name }} <i
+                            class="icofont-thin-down"></i></a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdown03">
+                        {% if request.user.is_doctor %}
+                        <li><a class="dropdown-item" href="{% url 'doctor-profile' request.user.id %}">
+                                <i class="far fa-user"></i> Profile</a>
+                        </li>
+                        {% elif request.user.is_patient %}
+                        <li><a class="dropdown-item" href="{% url 'patient-profile' request.user.id %}">
+                                <i class="fas fa-user"></i> Profile</a>
+                        </li>
+                        {% endif %}
+                        <li><a class="dropdown-item" href="{% url 'account-settings' %}">
+                                <i class="fas fa-cog"></i> Settings</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </li>
+
+                {% else %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">Get Started <i class="icofont-thin-down"></i></a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdown05">
+                        <li><a class="dropdown-item" href="{% url 'login' %}">
+                                <i class="fas fa-sign-in-alt"></i> Log In</a></li>
+                        <li><a class="dropdown-item" href="{% url 'doctor-register' %}">
+                                <i class="fas fa-user-md"></i> Doctor Sign Up</a></li>
+                        <li><a class="dropdown-item" href="{% url 'patient-register' %}">
+                                <i class="fas fa-user-injured"></i> Patient Sign Up</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} - {{ user.name }}{% endblock %}
+
+{% block content %}
+
+<section class="page-title bg-1">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block text-center">
+                    <span class="text-white">Doctor Details</span>
+                    <h1 class="text-capitalize mb-5 text-lg">{{ profile.user.name }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section doctor-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="doctor-img-block">
+                    {% if profile.image %}
+                    <img src="{{ profile.image.url }}" alt="{{ user.name }}" class="img-fluid w-100">
+
+                    {% else %}
+                    <img src="{% static 'images/placeholders/user-placeholder.jpg' %}" alt="{{ user.name }}"
+                         class="img-fluid w-100">
+                    {% endif %}
+
+
+                    <div class="info-block mt-4">
+                        <p class="mb-1">
+                            <span class="h3">{{ profile.user.name }}</span>
+                            {% if profile.gender %}<span class="h5">({{ profile.gender }})</span>{% endif %}
+                        </p>
+
+                        {% if profile.specialization %}
+                        <p class="h4 text-color-2">{{ profile.specialization }}</p>
+                        {% endif %}
+
+                        {% if profile.blood_group %}<p class="h5">Blood Group: {{ profile.blood_group }}</p>{% endif %}
+
+                        {% if profile.NID %}<p class="h5">NID: {{ profile.NID }}</p>{% endif %}
+
+                        {% if profile.phone %}<p class="h5">Phone: {{ profile.phone }}</p>{% endif %}
+
+                        {% if profile.BMDC_regNo %}<p class="h5">BMDC Reg No.: {{ profile.BMDC_regNo }}</p>{% endif %}
+
+                        {% if is_self %}
+                        <div class="text-center">
+                            <a href="{% url 'doctor-edit-profile' %}" class="btn btn-main-2 btn-round-full mt-3">
+                                <i class="far fa-edit"></i> Update Profile
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 col-md-6">
+                <div class="doctor-details mt-4 mt-lg-0">
+                    <h2 class="text-md">About myself</h2>
+                    <div class="divider my-4"></div>
+                    {% if profile.bio %}
+                    <p>{{ profile.bio }}</p>
+
+                    {% elif is_self and incomplete_profile %}
+                    <a href="{% url 'doctor-edit-profile' %}" class="btn btn-main-2 btn-round-full mt-3">
+                        Complete Your Profile
+                    </a>
+                    {% endif %}
+
+                    <hr/>
+
+                    <h2 class="text-md">Stats</h2>
+                    <div class="divider my-4"></div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4><b>{{ completed_appointments }}</b> Completed Appointment(s)</h4>
+                            <h4><b>{{ total_posts }}</b> Articles Posted</h4>
+                        </div>
+                    </div>
+
+                    {% if request.user.is_patient and not is_pending %}
+                    <hr/>
+                    <a href="{% url 'make-appointment' user.id %}"
+                       class="btn btn-main-2 btn-round-full mt-3">Make an Appointment With Me
+                        <i class="icofont-simple-right ml-2"></i>
+                    </a>
+                    {% elif request.user.is_patient and is_pending %}
+                    <hr/>
+                    <button class="btn btn-main-2 btn-round-full mt-3" disabled>
+                        Make an Appointment With Me
+                        <i class="icofont-simple-right ml-2"></i>
+                    </button>
+                    <h6 class="text-danger m-2">You have a pending appointment with me</h6>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <hr/>
+
+        <h3 class="my-3">Articles</h3>
+
+        {% if not articles %}
+        <h4 class="my-3">No activities yet</h4>
+        {% endif %}
+
+        <div class="row">
+            {% for article in articles %}
+            <div class="col-lg-6 col-md-6">
+                <div class="doctor-img-block">
+                    {% if article.article_image %}
+                    <img src="{{ article.article_image.url }}" alt="{{ article.article_title }}"
+                         class="img-fluid w-100">
+
+                    {% else %}
+                    <img src="{% static 'images/placeholders/article-image-placeholder.jpg' %}"
+                         alt="{{ article.article_title }}"
+                         class="img-fluid w-100">
+                    {% endif %}
+
+
+                    <div class="info-block mt-4">
+                        <span class="text-black text-capitalize mr-3">
+                            <i class="icofont-calendar mr-1"></i> {{ article.article_date_posted|date:"d N Y" }}
+                        </span>
+                        <p class="mb-1">
+                            <span class="h3">{{ article.article_title }}</span>
+                        </p>
+
+                        <div class="text-center">
+                            <a class="btn btn-main btn-round-full my-3"
+                               href="{% url 'article-details' article.article_slug %}">
+                                Read More <i class="icofont-simple-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if total_posts > 4 %}
+        <div>
+            <a href="#" class="btn btn-main-2 btn-round-full mt-3">
+                See More Posts <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

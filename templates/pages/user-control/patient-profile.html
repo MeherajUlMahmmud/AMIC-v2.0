@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} - {{ user.name }}{% endblock %}
+
+{% block content %}
+
+<section class="page-title bg-1">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block text-center">
+                    <span class="text-white">Patient Profile</span>
+                    <h1 class="text-capitalize mb-5 text-lg">{{ profile.user.name }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section doctor-single">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="doctor-img-block">
+                    {% if profile.image %}
+                    <img src="{{ profile.image.url }}" alt="{{ user.name }}" class="img-fluid w-100">
+
+                    {% else %}
+                    <img src="{% static 'images/placeholders/user-placeholder.jpg' %}" alt="{{ user.name }}"
+                         class="img-fluid w-100">
+                    {% endif %}
+
+
+                    <div class="info-block mt-4">
+                        <p class="mb-1">
+                            <span class="h3">{{ profile.user.name }}</span>
+                            {% if profile.gender %}<span class="h5">({{ profile.gender }})</span>{% endif %}
+                        </p>
+
+                        {% if profile.date_of_birth %}
+                        <p class="h5">Age: {{ profile.calc_age }} years old</p>
+                        {% endif %}
+
+                        {% if profile.height and profile.weight %}
+                        <p class="h5">BMI: {{ profile.calc_bmi }}</p>
+                        {% endif %}
+                        <div class="text-center">
+                            {% if is_self %}
+                            <a class="btn btn-main-2 btn-round-full my-3" href="{% url 'patient-edit-profile' %}">
+                                <i class="far fa-edit"></i> Update Profile
+                            </a>
+                            {% endif %}
+                        </div>
+
+                        <p class="h4 text-center">Member Since {{ user.date_joined.date}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 col-md-6">
+                <div class="doctor-details mt-4 mt-lg-0">
+                    <h2 class="text-md">General Information</h2>
+                    <div class="divider my-4"></div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4>Email: <a href="mailto:{{user.email}}">{{ user.email }}</a></h4>
+
+                            {% if profile.phone %}
+                            <h4><strong>Mobile:</strong>
+                                <a href="tel:{{profile.phone}}">
+                                    {{ profile.phone }}
+                                </a>
+                            </h4>
+                            {% endif %}
+
+                            {% if profile.date_of_birth %}
+                            <h4>Date of Birth: {{ profile.date_of_birth }}
+                            </h4>
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-6">
+                            {% if profile.blood_group %}
+                            <h4>Blood Group: {{ profile.blood_group }}
+                            </h4>
+                            {% endif %}
+
+                            {% if profile.height %}
+                            <h4>Height: {{ profile.height }} m</h4>
+                            {% endif %}
+
+                            {% if profile.weight %}
+                            <h4>Weight: {{ profile.weight }} KG</h4>
+                            {% endif %}
+                        </div>
+
+                        {% if is_self and incomplete_profile %}
+                        <a href="{% url 'patient-edit-profile' %}"
+                           class="btn btn-main-2 btn-round-full mt-3 m-3">
+                            Complete Your Profile
+                        </a>
+                        {% endif %}
+
+                        {% if is_self and has_access %}
+                        <a href="{% url 'health-record-home' user.id %}"
+                           class="btn btn-main btn-round-full m-3">
+                            <i class="fas fa-notes-medical"></i>  Health Records
+                        </a>
+                        {% endif %}
+
+                    </div>
+
+                    <hr/>
+
+                    <h2 class="text-md">Stats</h2>
+                    <div class="divider my-4"></div>
+                    <div class="row">
+                        <div class="col-lg-12">
+<!--                            num_countries|pluralize:"y,ies"-->
+                            <h4><b>{{ completed_appointments }}</b>
+                                Completed Appointment(s)
+                            </h4>
+
+                            <h4><b>{{ community_posts|length }}</b>
+                                Community Post(s)
+                            </h4>
+
+                            <h4><b>{{ total_blood_requests }}</b>
+                                Blood Request(s)
+                            </h4>
+
+                            <h4><b>{{ total_plasma_requests }}</b>
+                                Plasma Request(s)
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr/>
+
+        <h3 class="my-3">Patient Community Activities</h3>
+
+        {% if not community_posts %}
+        <h4 class="my-3">No activities yet</h4>
+        {% endif %}
+
+        <div class="row">
+            {% for post in community_posts %}
+            <div class="col-lg-6 col-md-6">
+                <div class="doctor-img-block">
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid w-100">
+
+                    {% else %}
+                    <img src="{% static 'images/placeholders/article-image-placeholder.jpg' %}" alt="{{ post.title }}"
+                         class="img-fluid w-100">
+                    {% endif %}
+
+
+                    <div class="info-block mt-4">
+                        <span class="text-black text-capitalize mr-3">
+                            <i class="icofont-calendar mr-1"></i> {{ post.date_posted|date:"d N Y" }}
+                        </span>
+
+                        <p class="mb-1"><span class="h3">{{ post.title }}</span></p>
+
+                        <div class="text-center">
+                            <a class="btn btn-main btn-round-full my-3"
+                               href="{% url 'community-post-detail' post.slug %}">
+                                Read More <i class="icofont-simple-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if total_posts > 4 %}
+        <div>
+            <a href="#" class="btn btn-main-2 btn-round-full mt-3">
+                See More Posts <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        {% endif %}
+
+        <hr/>
+
+        <h3 class="my-3">Blood Requests</h3>
+
+        {% if not blood_requests %}
+        <h4 class="my-3">No activities yet</h4>
+        {% endif %}
+
+        <div class="row">
+            {% for post in blood_requests %}
+            <div class="col-lg-3 col-md-3 col-sm-4">
+                <div class="card p-3 rounded">
+                    <div class="single-blog-right">
+                        <div class="m-5">
+                            <p class="h2 text-center text-danger">{{ post.blood_group }}</p>
+
+                        </div>
+                        <div class="blog-author">
+                            <h4>For
+                                <span class="text-color-2">{{ post.patient_name }}
+                                            ({{ post.gender }})</span>
+                            </h4>
+                        </div>
+                        <div class="blog-content">
+                            <h4>Needed Within: {{ post.needed_within }}</h4>
+                            <p><strong class="strong">{{ post.quantity }} Unit(s)</strong> of
+                                <strong class="text-danger">{{ post.blood_group }}</strong>
+                                blood needed.</p>
+                            <p>Posted {{ post.posted_on|timesince }} ago</p>
+                            <div class="readmore_area">
+                                <a href="{% url 'blood-donation-request-detail' post.id %}"
+                                   data-hover="Read More"><span>Read More</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if total_blood_requests > 4 %}
+        <div>
+            <a href="#" class="btn btn-main-2 btn-round-full mt-3">
+                See More Posts <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        {% endif %}
+
+        <hr/>
+
+        <h3 class="my-3">Plasma Requests</h3>
+
+        {% if not plasma_requests %}
+        <h4 class="my-3">No activities yet</h4>
+        {% endif %}
+
+        <div class="row">
+            {% for post in plasma_requests %}
+            <div class="col-lg-3 col-md-3 col-sm-4">
+                <div class="card p-3 rounded">
+                    <div class="single-blog-right">
+                        <div class="m-5">
+                            <p class="h2 text-center text-danger">{{ post.blood_group }}</p>
+
+                        </div>
+                        <div class="blog-author">
+                            <h4>For
+                                <span class="text-color-2">{{ post.patient_name }}
+                                            ({{ post.gender }})</span>
+                            </h4>
+                        </div>
+                        <div class="blog-content">
+                            <h4>Needed Within: {{ post.needed_within }}</h4>
+                            <p><strong class="strong">{{ post.quantity }} Unit(s)</strong> of
+                                <strong class="text-danger">{{ post.blood_group }}</strong>
+                                Plasma needed.</p>
+                            <p>Posted {{ post.posted_on|timesince }} ago</p>
+                            <div class="readmore_area">
+                                <a href="{% url 'plasma-donation-request-detail' post.id %}"
+                                   data-hover="Read More"><span>Read More</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if total_plasma_requests > 4 %}
+        <div>
+            <a href="#" class="btn btn-main-2 btn-round-full mt-3">
+                See More Posts <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

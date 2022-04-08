@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} - Edit Profile{% endblock %}
+
+{% block content %}
+
+<section class="page-title bg-1">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block text-center">
+                    <span class="text-white">Update Profile Details</span>
+                    <h1 class="text-capitalize mb-5 text-lg">{{ user.name }}</h1>
+
+                    <ul class="list-inline breadcumb-nav">
+                        <li class="list-inline-item"><a href="{% url 'home' %}" class="text-white">Home</a></li>
+                        <li class="list-inline-item"><span class="text-white">/</span></li>
+                        {% if user.is_authenticated and user.is_doctor %}
+                        <li class="list-inline-item">
+                            <a href="{% url 'doctor-profile' request.user.id %}" class="text-white">Profile</a>
+                        </li>
+                        {% elif user.is_authenticated and user.is_patient %}
+                        <li class="list-inline-item">
+                            <a href="{% url 'patient-profile' request.user.id %}" class="text-white">Profile</a>
+                        </li>
+                        {% endif %}
+                        <li class="list-inline-item"><span class="text-white">/</span></li>
+                        <li class="list-inline-item text-white-50">Update Profile</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container-fluid p-5">
+    {% if user.is_doctor %}
+    <div class="row">
+        <div class="col-lg-4 col-md-6">
+            <div class="doctor-img-block">
+                {% if profile.image %}
+                <img src="{{ profile.image.url }}" alt="{{ user.name }}" class="img-fluid w-100">
+
+                {% else %}
+                <img src="{% static 'images/placeholders/user-placeholder.jpg' %}" alt="{{ user.name }}"
+                     class="img-fluid w-100">
+                {% endif %}
+
+
+                <div class="info-block mt-4">
+                    <p class="mb-1">
+                        <span class="h3">{{ profile.user.name }}</span>
+                        {% if profile.gender %}<span class="h5">({{ profile.gender }})</span>{% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8 col-md-6">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <form class="p-3 border rounded" enctype="multipart/form-data"  method="post">
+                        <h3 class="text-center mb-3">Update Profile</h3>
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>About Me</label>
+                                    {{ form.bio|add_class:"form-control"|attr:"autofocus" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    {{ form.gender|add_class:"form-control" }}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Blood Group</label>
+                                    {{ form.blood_group|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Date of Birth</label>
+                                    {{ form.date_of_birth|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    {{ form.phone|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>NID</label>
+                                    {{ form.NID|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>BMDC Registration NO</label>
+                                    {{ form.BMDC_regNo|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Specialization</label>
+                                    {{ form.specialization|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Last Blood Donation</label>
+                                    {{ form.last_donation|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Display Image</label>
+                                    {{ form.image|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn btn-main btn-round-full" type="submit">
+                                <i class="far fa-edit"></i><span> Update Profile</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% elif user.is_patient %}
+    <div class="row">
+        <div class="col-lg-4 col-md-6">
+            <div class="doctor-img-block">
+                {% if profile.image %}
+                <img src="{{ profile.image.url }}" alt="{{ user.name }}" class="img-fluid w-100">
+
+                {% else %}
+                <img src="{% static 'images/placeholders/user-placeholder.jpg' %}" alt="{{ user.name }}"
+                     class="img-fluid w-100">
+                {% endif %}
+
+
+                <div class="info-block mt-4">
+                    <p class="mb-1">
+                        <span class="h3">{{ profile.user.name }}</span>
+                        {% if profile.gender %}<span class="h5">({{ profile.gender }})</span>{% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8 col-md-6">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <form class="p-3 border rounded" enctype="multipart/form-data" method="post">
+                        <h3 class="text-center mb-3">Update Profile</h3>
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    {{ form.gender|add_class:"form-control" }}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Blood Group</label>
+                                    {{ form.blood_group|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Height (In Meters)</label>
+                                    {{ form.height|add_class:"form-control" }}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Weight (In KG)</label>
+                                    {{ form.weight|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Date of Birth</label>
+                                    {{ form.date_of_birth|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    {{ form.phone|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Display Image</label>
+                                    {{ form.image|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Last Blood Donation</label>
+                                    {{ form.last_donation|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    {{ form.address|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn btn-main btn-round-full" type="submit">
+                                <i class="far fa-edit"></i><span> Update Profile</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+
+<section class="contact-form-wrap section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="section-title text-center">
+                    <h2 class="text-md mb-2">Sign Up as Doctor</h2>
+                    <div class="divider mx-auto my-4"></div>
+                    <p class="mb-5">Be a Caregiver on our platform</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <form method="post">
+
+
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                {{ doctor_form.name|add_class:"form-control"|attr:"autofocus" }}
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                {{ doctor_form.email|add_class:"form-control" }}
+                                {{ doctor_form.email.errors }}
+                                <p>{{ doctor_form.email.help_text|safe }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                {{ doctor_form.password1|add_class:"form-control" }}
+                                {{ doctor_form.password1.errors }}
+                                <p class="help">{{ doctor_form.password1.help_text|safe }}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                {{ doctor_form.password2|add_class:"form-control" }}
+                                {{ doctor_form.password2.errors }}
+                                <p class="help">{{ doctor_form.password2.help_text|safe }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <input class="agree-term" id="agree-term" name="check" type="checkbox" required/>
+                        <span>
+                            I agree to all statements in <a class="term-service" href="#">Terms of service</a>
+                            </span>
+                    </div>
+
+
+                    <div class="text-center">
+                        <button class="btn btn-main btn-round-full" type="submit">
+                            Sign Up <i class="button__icon fa fa-user-plus"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
