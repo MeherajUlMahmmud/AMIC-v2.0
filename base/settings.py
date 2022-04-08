@@ -22,8 +22,12 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # apps
     "appointment_control",
+    "article_control",
     "covid_control",
+    "emergency_service_control",
+    "health_advisor_control",
     "ot_control",
+    "patient_community_control",
     "patient_record_control",
     "pharmacy_control",
     "user_control",
