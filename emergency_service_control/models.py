@@ -84,7 +84,7 @@ class PlasmaRequestModel(models.Model):
 
 
 class AmbulanceModel(models.Model):
-    CITY_CHOICES = (
+    CITY_CHOICES = [
         ('', 'Select City'),
         ('Bagerhat', 'Bagerhat'),
         ('Bandarban', 'Bandarban'),
@@ -150,7 +150,7 @@ class AmbulanceModel(models.Model):
         ('Sylhet', 'Sylhet'),
         ('Tangail', 'Tangail'),
         ('Thakurgaon', 'Thakurgaon')
-    )
+    ]
 
     TYPES_CHOICES = [
         ('', 'Select Ambulance Type'),
@@ -160,16 +160,25 @@ class AmbulanceModel(models.Model):
         ('ICU', 'ICU'),
         ('Freezer', 'Freezer'),
     ]
+
+    
+    GENDER_CHOICES = [
+        ('', 'Select Gender'),
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+    ]
+
     vehicle_number = models.CharField(max_length=30, unique=True)
     city = models.CharField(max_length=30, choices=CITY_CHOICES)
     type = models.CharField(max_length=20, choices=TYPES_CHOICES)
     driver_name = models.CharField(max_length=30, null=True, blank=True)
     driver_phone = models.CharField(max_length=20, null=True, blank=True)
     driver_email= models.EmailField(max_length=40, null=True, blank=True)
-    driver_address= models.TextField(max_length=20, null=True, blank=True)
+    driver_address= models.TextField(null=True, blank=True)
     driver_NID= models.CharField(max_length=25, null=True, blank=True, unique=True)
     driver_license= models.CharField(max_length=25, null=True, blank=True,unique=True)
-    driver_gender= models.CharField(max_length=10, null=True, blank=True)
+    driver_gender= models.CharField(max_length=10, choices=GENDER_CHOICES, null=True, blank=True)
     driver_image= models.ImageField(upload_to="images/ambulance/", null=True, blank=True)
     ambulance_image= models.ImageField(null=True, blank=True)
     rent_inter_city = models.DecimalField(max_digits=10, decimal_places=2)
