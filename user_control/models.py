@@ -82,6 +82,11 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
         return True
 
 
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
+
 # Patient Model (Only for Patients / Patients' Profile)
 class PatientModel(models.Model):
     """
@@ -98,33 +103,19 @@ class PatientModel(models.Model):
     address: The address of the patient.
     last_donation: The date of the last blood donation of the patient.
     """
-    GENDER_CHOICES = [
-        ('Male', 'Male'),
-        ('Female', 'Female'),
-        ('Other', 'Other'),
-    ]
-
-    BLOOD_GROUP_CHOICES = [
-        ('A+', 'A+'),
-        ('A-', 'A-'),
-        ('B+', 'B+'),
-        ('B-', 'B-'),
-        ('AB+', 'AB+'),
-        ('AB-', 'AB-'),
-        ('O+', 'O+'),
-        ('O-', 'O-'),
-    ]
 
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE)
-    image = models.ImageField(null=True, blank=True)  # Patient Profile Picture
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=True, blank=True)
-    blood_group = models.CharField(max_length=10, choices=BLOOD_GROUP_CHOICES, null=True, blank=True)
+    image = models.ImageField(upload_to="images/users/", null=True, blank=True)  # Patient Profile Picture
+    gender = models.CharField(max_length=10, null=True, blank=True)
+    blood_group = models.CharField(max_length=10, null=True, blank=True)
     height = models.DecimalField(decimal_places=2, max_digits=4, null=True, blank=True)
     weight = models.IntegerField(null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     phone = models.CharField(max_length=15, null=True, blank=True)
     address = models.TextField(max_length=100, null=True, blank=True)
     last_donation = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.user.name
@@ -137,6 +128,10 @@ class PatientModel(models.Model):
         return today.year - self.date_of_birth.year - (
                     (today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
 
+    class Meta:
+        verbose_name = 'Patient'
+        verbose_name_plural = 'Patients'
+
 
 """
 Specialization Model for Doctors in order to make the 
@@ -146,9 +141,15 @@ specialization field in Doctor Profile dynamic
 
 class SpecializationModel(models.Model):
     specialization = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.specialization
+
+    class Meta:
+        verbose_name = 'Specialization'
+        verbose_name_plural = 'Specializations'
 
 
 # Doctor Model (only for Doctors / Doctors' Profile)
@@ -158,46 +159,42 @@ class DoctorModel(models.Model):
     This model includes the following fields:
     user: A one-to-one field that references the User model.
     bio: A text field that stores the doctor's bio.
-    image: A file field that stores the patient's image.
+    image: A file field that stores the doctor's image.
     gender: The gender of the patient.
-    blood_group: The blood group of the patient
-    date_of_birth: The date of birth of the patient.
-    phone: The phone number of the patient.
+    blood_group: The blood group of the doctor
+    date_of_birth: The date of birth of the doctor.
+    phone: The phone number of the doctor.
     nid: The national id card number of the doctor.
     specialization: The specialization of the doctor.
     bmdc_reg_no: The BMDC registration number of the doctor.
     last_donation: The date of the last blood donation of the doctor.
 
     """
-
-    GENDER_CHOICES = [
-        ('Male', 'Male'),
-        ('Female', 'Female'),
-        ('Other', 'Other'),
-    ]
-
-    BLOOD_GROUP_CHOICES = [
-        ('A+', 'A+'),
-        ('A-', 'A-'),
-        ('B+', 'B+'),
-        ('B-', 'B-'),
-        ('AB+', 'AB+'),
-        ('AB-', 'AB-'),
-        ('O+', 'O+'),
-        ('O-', 'O-'),
-    ]
-
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE)
     bio = models.TextField(null=True, blank=True)
-    image = models.ImageField(null=True, blank=True)
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=True, blank=True)
-    blood_group = models.CharField(max_length=10, choices=BLOOD_GROUP_CHOICES, null=True, blank=True)
+    image = models.ImageField(upload_to="images/users/", null=True, blank=True) # Doctor Profile Picture
+    gender = models.CharField(max_length=10, null=True, blank=True)
+    blood_group = models.CharField(max_length=10, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     phone = models.CharField(max_length=15, null=True, blank=True)
     NID = models.CharField(max_length=50, null=True, blank=True)
     specialization = models.ForeignKey(SpecializationModel, null=True, blank=True, on_delete=models.SET_NULL)
     BMDC_regNo = models.CharField(max_length=100, null=True, blank=True)
     last_donation = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user.name
+
+    def calc_age(self):
+        today = date.today()
+        return today.year - self.date_of_birth.year - (
+                    (today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
+
+    class Meta:
+        verbose_name = 'Doctor'
+        verbose_name_plural = 'Doctors'
 
 
 # Responses from Contact Us form will be saved here
@@ -214,3 +211,12 @@ class FeedbackModel(models.Model):
     email = models.CharField(max_length=255)  # email of the user
     subject = models.CharField(max_length=255)  # subject of the message
     message = models.TextField()  # message body
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name + " - " + self.email
+
+    class Meta:
+        verbose_name = 'Feedback'
+        verbose_name_plural = 'Feedbacks'
