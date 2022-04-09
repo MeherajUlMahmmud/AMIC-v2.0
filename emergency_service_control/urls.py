@@ -1,8 +1,14 @@
 from django.urls import path
 
-from .views import *
+from emergency_service_control.views.ambulance_views import *
+from emergency_service_control.views.blood_views import *
+from emergency_service_control.views.plasma_views import *
 
 urlpatterns = [
+    path('ambulance', ambulance_home_view, name='ambulance-home'),
+    path('ambulance/<int:pk>', ambulance_detail_view, name='ambulance-detail'),
+
+
     path('blood-donation', blood_donation_home_view, name='blood-donation-home'), # path for home page
     path('blood-donation/post-request', post_blood_request_view, name='blood-donation-post-request'), # path for post request
     path('blood-donation/update-request/<int:pk>', update_blood_request_view, name='blood-donation-update-request'), # path for update request
@@ -11,7 +17,6 @@ urlpatterns = [
     path('blood-donation/requests/<int:pk>', users_requests_view, name='users-requests'), # path for user requests
 
 
-	
     path('plasma-donation', plasma_donation_home_view, name='plasma-donation-home'),
     path('plasma-donation/post-request', post_plasma_request_view, name='plasma-donation-post-request'),
     path('plasma-donation/update-request/<int:pk>', update_plasma_request_view, name='plasma-donation-update-request'),
