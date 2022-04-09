@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} - Ambulance Detail{% endblock %}
+
+{% block content %}
+
+<section>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 col-md-12">
+				<div class="blog-breadcrumbs-area">
+					<div class="blog-breadcrumbs-left">
+						<h2>Ambulance Information</h2>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-12">
+			</div>
+			<div class="col-lg-3 col-md-12">
+			</div>
+		</div>
+		<div class="row mt-3">
+			<div class="col-lg-12">
+				<div class="blog-breadcrumbs-right">
+					<ol class="breadcrumb">
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row mb-5">
+			<div class="col-lg-12">
+
+				<div class="row">
+					<div class="col-lg-6">
+						<h3 class="text-center">
+							Ambulance Details
+						</h3>
+						<hr />
+						<h4>Vechicle Number:
+							<span class="text-color-2">
+								{{ ambulance.vehicle_number }}
+							</span>
+						</h4>
+						<h4>Ambulance Type:
+							<span class="text-color-2">
+								{{ ambulance.type }}
+							</span>
+						</h4>
+						<h4>Registered City:
+							<span class="text-color-2">
+								{{ ambulance.city }}
+							</span>
+						</h4>
+						<h4>Inter City Rent:
+							<span class="text-color-2">
+								{{ ambulance.rent_inter_city }} BDT per Hour
+							</span>
+						</h4>
+						<h4>Intra City Rent:
+							<span class="text-color-2">
+								{{ ambulance.rent_intra_civision }} BDT per Hour
+							</span>
+						</h4>
+						<h4>Image:</h4>
+						<img src="{{ ambulance.ambulance_image.url }}" alt="Ambulance Image" class="img-fluid" />
+					</div>
+
+					<div class="col-lg-6">
+						<h3 class="text-center">
+							Driver Details
+						</h3>
+						<hr />
+						<h4>Name:
+							<span class="text-color-2">
+								{{ ambulance.driver_name }}
+							</span>
+						</h4>
+						<h4>Phone:
+							<span class="text-color-2">
+								{{ ambulance.driver_phone }}
+							</span>
+						</h4>
+						<h4>Email Address:
+							<span class="text-color-2">
+								{{ ambulance.driver_email }}
+							</span>
+						</h4>
+						<h4>Gender:
+							<span class="text-color-2">
+								{{ ambulance.driver_gender }}
+							</span>
+						</h4>
+						<h4>Image:</h4>
+						<img src="{{ ambulance.driver_image.url }}" alt="Driver Image" class="img-fluid" height="250px"
+							width="250px" />
+					</div>
+				</div>
+				<hr />
+
+				<div class="row mt-5">
+					<div class="col-lg-12">
+						<h3>Mostly Available Area</h3>
+						<iframe width="100%" height="500" frameborder="0" scrolling="no" marginheight="0"
+							marginwidth="0" src={{ location_link|safe }}></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock %}
