@@ -45,7 +45,7 @@ class BloodRequestForm(ModelForm):
     class Meta: # Provide an association between the ModelForm and a model
         model = BloodRequestModel # And information about the fields in the model
         fields = '__all__' # Or specify the fields to include (i.e. not include the ones we don't want)
-        exclude = ['user', 'is_active'] # Or specify the fields to exclude from the form
+        exclude = ['user', 'is_active', 'created_at', 'updated_at'] # Or specify the fields to exclude from the form
 
 
 
@@ -91,5 +91,13 @@ class PlasmaRequestForm(ModelForm):
     class Meta:
         model = PlasmaRequestModel
         fields = '__all__'
-        exclude = ['user', 'is_active']
+        exclude = ['user', 'is_active', 'created_at', 'updated_at'] # Or specify the fields to exclude from the form
 
+
+
+class AmbulanceForm(ModelForm):
+
+    class Meta:
+        model = AmbulanceModel
+        fields = '__all__'
+        exclude = ['created_at', 'updated_at'] # Or specify the fields to exclude from the form
