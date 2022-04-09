@@ -31,6 +31,13 @@ class AppointmentModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.patient.name, "appointment with", self.doctor.name
+
+    class Meta:
+        verbose_name = 'Appointment'
+        verbose_name_plural = 'Appointments'
+
 
 class PrescriptionModel(models.Model):
     """
@@ -45,3 +52,10 @@ class PrescriptionModel(models.Model):
     details = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.appointment.patient.name, "prescription"
+
+    class Meta:
+        verbose_name = 'Prescription'
+        verbose_name_plural = 'Prescriptions'
