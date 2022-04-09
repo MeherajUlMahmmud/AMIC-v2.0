@@ -93,18 +93,39 @@ class DoctorEditProfileForm(ModelForm):
      - gender: a drop down for doctor's gender
      - last_donation: a date input for the doctor's last donation
     """
+    GENDER_CHOICES = [
+        ('', 'Select Gender'),
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+    ]
+
+    BLOOD_GROUP_CHOICES = [
+        ('', 'Select Blood Group'),
+        ('A+', 'A+'),
+        ('A-', 'A-'),
+        ('B+', 'B+'),
+        ('B-', 'B-'),
+        ('AB+', 'AB+'),
+        ('AB-', 'AB-'),
+        ('O+', 'O+'),
+        ('O-', 'O-'),
+    ]
+
     image = forms.ImageField(
         required=False,
         error_messages={'invalid': "Image files only"},
         widget=forms.FileInput,
     )  # image
+    gender = forms.CharField(widget=forms.Select(choices=GENDER_CHOICES))
+    blood_group = forms.CharField(widget=forms.Select(choices=BLOOD_GROUP_CHOICES))
     date_of_birth = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))  # date of birth
     last_donation = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))  # last donation
 
     class Meta:
         model = DoctorModel  # get model
         fields = '__all__'  # get all fields
-        exclude = ['user']  # Exclude the user field
+        exclude = ['user', 'created_at', 'updated_at']  # Exclude the user field
 
 
 class PatientEditProfileForm(ModelForm):
@@ -120,18 +141,39 @@ class PatientEditProfileForm(ModelForm):
      - gender: a drop down for patient's gender
      - last_donation: a date input for the patient's last donation
     """
+    GENDER_CHOICES = [
+        ('', 'Select Gender'),
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+    ]
+
+    BLOOD_GROUP_CHOICES = [
+        ('', 'Select Blood Group'),
+        ('A+', 'A+'),
+        ('A-', 'A-'),
+        ('B+', 'B+'),
+        ('B-', 'B-'),
+        ('AB+', 'AB+'),
+        ('AB-', 'AB-'),
+        ('O+', 'O+'),
+        ('O-', 'O-'),
+    ]
+
     image = forms.ImageField(
         required=False,
         error_messages={'invalid': "Image files only"},
         widget=forms.FileInput,
     )  # image
+    gender = forms.CharField(widget=forms.Select(choices=GENDER_CHOICES))
+    blood_group = forms.CharField(widget=forms.Select(choices=BLOOD_GROUP_CHOICES))
     date_of_birth = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))  # date of birth
     last_donation = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))  # last donation
 
     class Meta:
         model = PatientModel  # PatientModel
         fields = '__all__'  # all fields
-        exclude = ['user']  # exclude user
+        exclude = ['user', 'created_at', 'updated_at']  # exclude user
 
 
 class AccountInformationForm(ModelForm):  # AccountInformationForm
