@@ -1,3 +1,4 @@
 from django.contrib import admin
+from .models import OTScheduleModel
 
-# Register your models here.
+admin.site.register(OTScheduleModel)
