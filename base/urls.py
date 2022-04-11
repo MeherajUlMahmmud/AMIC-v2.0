@@ -10,8 +10,9 @@ urlpatterns = [
     path('appointments/', include('appointment_control.urls')),
     path('articles/', include('article_control.urls')),
     path('emergency/', include('emergency_service_control.urls')),
-    path('patient-community/', include('patient_community_control.urls')),
     path('health-advisor/', include('health_advisor_control.urls')),
+    path('ot/', include('ot_control.urls')),
+    path('patient-community/', include('patient_community_control.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
