@@ -37,12 +37,13 @@
 					<h3>No Bookings Yet</h3>
 					{% endif %}
 
-					{% for post in bookings %}
+					{% if bookings %}
 					<div class="col-lg-12">
 						<div class="text-center">
 							<h5>Next 7 days bookings</h5>
 						</div>
 					</div>
+					{% for post in bookings %}
 					<div class="col-lg-3 col-md-3 mb-5">
 						<div class="card rounded">
 							<div class="single-blog-right">
@@ -62,6 +63,7 @@
 						</div>
 					</div>
 					{% endfor %}
+					{% endif %}
 
 				</div>
 			</div>
