@@ -104,10 +104,29 @@ class PatientModel(models.Model):
     last_donation: The date of the last blood donation of the patient.
     """
 
+    GENDER_CHOICES = [
+        ('', 'Select Gender'),
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+    ]
+
+    BLOOD_GROUP_CHOICES = [
+        ('', 'Select Blood Group'),
+        ('A+', 'A+'),
+        ('A-', 'A-'),
+        ('B+', 'B+'),
+        ('B-', 'B-'),
+        ('AB+', 'AB+'),
+        ('AB-', 'AB-'),
+        ('O+', 'O+'),
+        ('O-', 'O-'),
+    ]
+
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="images/users/", null=True, blank=True)  # Patient Profile Picture
-    gender = models.CharField(max_length=10, null=True, blank=True)
-    blood_group = models.CharField(max_length=10, null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=True, blank=True)
+    blood_group = models.CharField(max_length=10, choices=BLOOD_GROUP_CHOICES, null=True, blank=True)
     height = models.DecimalField(decimal_places=2, max_digits=4, null=True, blank=True)
     weight = models.IntegerField(null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
@@ -170,6 +189,26 @@ class DoctorModel(models.Model):
     last_donation: The date of the last blood donation of the doctor.
 
     """
+
+    GENDER_CHOICES = [
+        ('', 'Select Gender'),
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+    ]
+
+    BLOOD_GROUP_CHOICES = [
+        ('', 'Select Blood Group'),
+        ('A+', 'A+'),
+        ('A-', 'A-'),
+        ('B+', 'B+'),
+        ('B-', 'B-'),
+        ('AB+', 'AB+'),
+        ('AB-', 'AB-'),
+        ('O+', 'O+'),
+        ('O-', 'O-'),
+    ]
+
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE)
     bio = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to="images/users/", null=True, blank=True) # Doctor Profile Picture
