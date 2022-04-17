@@ -29,7 +29,7 @@
 
                     {% else %}
                     <img src="{% static 'images/placeholders/user-placeholder.jpg' %}" alt="{{ user.name }}"
-                         class="img-fluid w-100">
+                        class="img-fluid w-100">
                     {% endif %}
 
 
@@ -65,59 +65,71 @@
                     <div class="divider my-4"></div>
                     <div class="row">
                         <div class="col-lg-6">
-                            <h4>Email: <a href="mailto:{{user.email}}">{{ user.email }}</a></h4>
+                            <h4>Email: <a href="mailto:{{user.email}}">
+                                    <span class="text-color-2">
+                                        {{ user.email }}
+                                    </span>
+                                </a></h4>
 
                             {% if profile.phone %}
                             <h4><strong>Mobile:</strong>
                                 <a href="tel:{{profile.phone}}">
-                                    {{ profile.phone }}
+                                    <span class="text-color-2">
+                                        {{ profile.phone }}
+                                    </span>
                                 </a>
                             </h4>
                             {% endif %}
 
                             {% if profile.date_of_birth %}
-                            <h4>Date of Birth: {{ profile.date_of_birth }}
+                            <h4>Date of Birth: <span class="text-color-2">
+                                    {{ profile.date_of_birth }}
+                                </span>
                             </h4>
                             {% endif %}
                         </div>
                         <div class="col-lg-6">
                             {% if profile.blood_group %}
-                            <h4>Blood Group: {{ profile.blood_group }}
+                            <h4>Blood Group: <span class="text-color-2">
+                                    {{ profile.blood_group }}
+                                </span>
                             </h4>
                             {% endif %}
 
                             {% if profile.height %}
-                            <h4>Height: {{ profile.height }} m</h4>
+                            <h4>Height: <span class="text-color-2">
+                                    {{ profile.height }} m
+                                </span></h4>
                             {% endif %}
 
                             {% if profile.weight %}
-                            <h4>Weight: {{ profile.weight }} KG</h4>
+                            <h4>Weight: <span class="text-color-2">
+                                    {{ profile.weight }} KG
+                                </span></h4>
                             {% endif %}
                         </div>
 
                         {% if is_self and incomplete_profile %}
-                        <a href="{% url 'patient-edit-profile' %}"
-                           class="btn btn-main-2 btn-round-full mt-3 m-3">
+                        <a href="{% url 'patient-edit-profile' %}" class="btn btn-main-2 btn-round-full mt-3 m-3">
                             Complete Your Profile
                         </a>
                         {% endif %}
 
                         {% if is_self and has_access %}
-                        <a href="{% url 'health-record-home' user.id %}"
-                           class="btn btn-main btn-round-full m-3">
-                            <i class="fas fa-notes-medical"></i>  Health Records
+                        <a href="#" class="btn btn-main btn-round-full m-3">
+                            <i class="fas fa-notes-medical"></i> Health Records
                         </a>
                         {% endif %}
 
                     </div>
 
-                    <hr/>
+                    <hr />
 
                     <h2 class="text-md">Stats</h2>
                     <div class="divider my-4"></div>
                     <div class="row">
                         <div class="col-lg-12">
-<!--                            num_countries|pluralize:"y,ies"-->
+                            <!--                            num_countries|pluralize:"y,ies"-->
                             <h4><b>{{ completed_appointments }}</b>
                                 Completed Appointment(s)
                             </h4>
@@ -139,7 +151,7 @@
             </div>
         </div>
 
-        <hr/>
+        <hr />
 
         <h3 class="my-3">Patient Community Activities</h3>
 
@@ -156,7 +168,7 @@
 
                     {% else %}
                     <img src="{% static 'images/placeholders/article-image-placeholder.jpg' %}" alt="{{ post.title }}"
-                         class="img-fluid w-100">
+                        class="img-fluid w-100">
                     {% endif %}
 
 
@@ -169,7 +181,7 @@
 
                         <div class="text-center">
                             <a class="btn btn-main btn-round-full my-3"
-                               href="{% url 'community-post-detail' post.slug %}">
+                                href="{% url 'community-post-detail' post.slug %}">
                                 Read More <i class="icofont-simple-right ml-2"></i>
                             </a>
                         </div>
@@ -187,7 +199,7 @@
         </div>
         {% endif %}
 
-        <hr/>
+        <hr />
 
         <h3 class="my-3">Blood Requests</h3>
 
@@ -207,18 +219,19 @@
                         <div class="blog-author">
                             <h4>For
                                 <span class="text-color-2">{{ post.patient_name }}
-                                            ({{ post.gender }})</span>
+                                    ({{ post.gender }})</span>
                             </h4>
                         </div>
                         <div class="blog-content">
                             <h4>Needed Within: {{ post.needed_within }}</h4>
                             <p><strong class="strong">{{ post.quantity }} Unit(s)</strong> of
                                 <strong class="text-danger">{{ post.blood_group }}</strong>
-                                blood needed.</p>
+                                blood needed.
+                            </p>
                             <p>Posted {{ post.posted_on|timesince }} ago</p>
                             <div class="readmore_area">
                                 <a href="{% url 'blood-donation-request-detail' post.id %}"
-                                   data-hover="Read More"><span>Read More</span></a>
+                                    data-hover="Read More"><span>Read More</span></a>
                             </div>
                         </div>
                     </div>
@@ -235,7 +248,7 @@
         </div>
         {% endif %}
 
-        <hr/>
+        <hr />
 
         <h3 class="my-3">Plasma Requests</h3>
 
@@ -255,18 +268,19 @@
                         <div class="blog-author">
                             <h4>For
                                 <span class="text-color-2">{{ post.patient_name }}
-                                            ({{ post.gender }})</span>
+                                    ({{ post.gender }})</span>
                             </h4>
                         </div>
                         <div class="blog-content">
                             <h4>Needed Within: {{ post.needed_within }}</h4>
                             <p><strong class="strong">{{ post.quantity }} Unit(s)</strong> of
                                 <strong class="text-danger">{{ post.blood_group }}</strong>
-                                Plasma needed.</p>
+                                Plasma needed.
+                            </p>
                             <p>Posted {{ post.posted_on|timesince }} ago</p>
                             <div class="readmore_area">
                                 <a href="{% url 'plasma-donation-request-detail' post.id %}"
-                                   data-hover="Read More"><span>Read More</span></a>
+                                    data-hover="Read More"><span>Read More</span></a>
                             </div>
                         </div>
                     </div>

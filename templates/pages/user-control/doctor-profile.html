@@ -37,20 +37,25 @@
                     <div class="info-block mt-4">
                         <p class="mb-1">
                             <span class="h3">{{ profile.user.name }}</span>
-                            {% if profile.gender %}<span class="h5">({{ profile.gender }})</span>{% endif %}
+                            {% if profile.gender %}
+                            <span class="h5">({{ profile.gender }})</span>
+                            {% endif %}
                         </p>
 
                         {% if profile.specialization %}
                         <p class="h4 text-color-2">{{ profile.specialization }}</p>
                         {% endif %}
 
-                        {% if profile.blood_group %}<p class="h5">Blood Group: {{ profile.blood_group }}</p>{% endif %}
+                        {% if profile.blood_group %}
+                        <p class="h5">Blood Group:
+                            <span class="text-color-2">{{ profile.blood_group }}</span>
+                        </p>{% endif %}
 
-                        {% if profile.NID %}<p class="h5">NID: {{ profile.NID }}</p>{% endif %}
-
-                        {% if profile.phone %}<p class="h5">Phone: {{ profile.phone }}</p>{% endif %}
-
-                        {% if profile.BMDC_regNo %}<p class="h5">BMDC Reg No.: {{ profile.BMDC_regNo }}</p>{% endif %}
+                        {% if profile.phone %}
+                        <p class="h5">Phone:
+                            <span class="text-color-2">{{ profile.phone }}</span>
+                        </p>
+                        {% endif %}
 
                         {% if is_self %}
                         <div class="text-center">
