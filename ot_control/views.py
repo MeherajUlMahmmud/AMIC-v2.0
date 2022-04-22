@@ -47,7 +47,7 @@ def update_ot_booking_view(request, pk):
 
     # check if the user is the owner of the booking
     if (
-        request.user != booking.patient.user
+        request.user != booking.patient.user and booking.status != "Pending"
     ):  # if the user is not the owner of the booking
         return redirect("ot-booking-detail", pk)  # redirect to detail page
 
@@ -69,7 +69,7 @@ def delete_ot_booking_view(request, pk):
 
     # check if the user is the owner of the booking
     if (
-        request.user != booking.patient.user
+        request.user != booking.patient.user and booking.status != "Pending"
     ):  # if the user is not the owner of the booking
         return redirect("ot-booking-detail", pk)  # redirect to detail page
 
