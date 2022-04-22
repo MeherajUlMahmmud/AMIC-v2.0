@@ -10,6 +10,10 @@ class TestTypeModel(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Test Type"
+        verbose_name_plural = "Test Types"
+
 
 class TestModel(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
@@ -31,3 +35,7 @@ class TestModel(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "Pathology Test"
+        verbose_name_plural = "Pathology Tests"
