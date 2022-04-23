@@ -7,17 +7,18 @@ from user_control.models import PatientModel, UserModel
 
 
 def ot_booking_home_view(request):
+    today = datetime.date.today()
+    seven_days_later = today + datetime.timedelta(days=6)
     bookings = OTScheduleModel.objects.filter(
-        date__range=[
-            datetime.date.today(),
-            datetime.date.today() + datetime.timedelta(days=7),
-        ]
+        date__range=[today, seven_days_later]
     ).order_by(
         "date"
     )  # get all bookings within the next 7 days
 
     context = {
         "bookings": bookings,
+        "today": today,
+        "seven_days_later": seven_days_later,
     }
     return render(request, "pages/ot/ot_booking_home.html", context)
 
