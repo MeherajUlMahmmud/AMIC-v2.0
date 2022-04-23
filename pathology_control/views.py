@@ -5,12 +5,13 @@ from pathology_control.models import TestModel
 
 
 def pathology_home_view(request):
-    bookings = TestModel.objects.filter(user=request.user).order_by("--created_at")
+    bookings = TestModel.objects.filter(user=request.user).order_by("-created_at")
 
-    pending_bookings = bookings.filter(status="pending")
-    completed_bookings = bookings.filter(status="completed")
-    in_progress_bookings = bookings.filter(status="in progress")
-    rejected_bookings = bookings.filter(status="rejected")
+    pending_bookings = bookings.filter(status="P")
+    completed_bookings = bookings.filter(status="C")
+    in_progress_bookings = bookings.filter(status="I")
+    rejected_bookings = bookings.filter(status="R")
+
     context = {
         "pending_bookings": pending_bookings,
         "completed_bookings": completed_bookings,
@@ -26,17 +27,28 @@ def pathology_post_view(request):
     if request.method == "POST":
         form = TestBookingForm(request.POST)
         if form.is_valid():
-            form.save()
+            booking = form.save(commit=False)
+            booking.user = request.user
+            booking.save()
             return render(request, "pages/pathology/pathology_home.html")
     context = {
         "task": task,
         "form": form,
     }
-    return render(request, "pages/pathology/pathology_post.html", context)
+    return render(request, "pages/pathology/pathology_create_update.html", context)
 
 
 def pathology_detail_view(request, pk):
     booking = TestModel.objects.get(id=pk)
+    status = None
+    if booking.status == "P":
+        status = "Pending"
+    elif booking.status == "C":
+        status = "Completed"
+    elif booking.status == "I":
+        status = "In Progress"
+    elif booking.status == "R":
+        status = "Rejected"
 
     # check if the user is the owner of the booking
     my_booking = False
@@ -45,13 +57,14 @@ def pathology_detail_view(request, pk):
 
     # check if the booking is in the future
     is_pending = False
-    if booking.status == "Pending":
+    if booking.status == "P":
         is_pending = True
 
     context = {
         "booking": booking,
         "my_booking": my_booking,
         "is_pending": is_pending,
+        "status": status,
     }
     return render(request, "pages/pathology/pathology_detail.html", context)
 
@@ -71,12 +84,12 @@ def update_pathology_view(request, pk):
         form = TestBookingForm(request.POST, instance=booking)
         if form.is_valid():
             form.save()
-            return redirect("pathology-booking-detail", pk)
+            return redirect("pathology-detail", pk)
     context = {
         "task": task,
         "form": form,
     }
-    return render(request, "pages/pathology/update_pathology.html", context)
+    return render(request, "pages/pathology/pathology_create_update.html", context)
 
 
 def delete_pathology_view(request, pk):
@@ -86,11 +99,11 @@ def delete_pathology_view(request, pk):
     if (
         request.user != booking.user and booking.status != "Pending"
     ):  # if the user is not the owner of the booking
-        return redirect("pathology-booking-detail", pk)  # redirect to detail page
+        return redirect("pathology-detail", pk)  # redirect to detail page
 
     if request.method == "POST":
         booking.delete()
-        return redirect("pathology-booking-home")
+        return redirect("pathology-home")
 
     context = {"booking": booking}
-    return render(request, "pages/pathology/delete_pathology.html", context)
+    return render(request, "pages/pathology/pathology_delete.html", context)
