@@ -34,7 +34,8 @@
 
 				<div class="row">
 					{% if not bookings %}
-					<h3>No Bookings Yet</h3>
+					<h3>No Bookings within <span class="text-color-2 ">{{ today }}</span> to <span
+							class="text-color-2 ">{{ seven_days_later }}</span></h3>
 					{% endif %}
 
 					{% if bookings %}
