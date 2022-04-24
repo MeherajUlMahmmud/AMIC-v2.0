@@ -92,13 +92,23 @@
 							{% endcomment %}
 							Price:
 							<span class="text-color-2">{{ medicine.price|floatformat:2 }} BDT</span>
+							({{ medicine.price_details }})
 						</h6>
 						<br /><br />
+
+						{% if request.user.is_authenticated %}
 						<div class="text-center">
-							<a href="" class="btn btn-main btn-round-full">
-								<i class="fa fa-shopping-cart"></i> Add to Cart
-							</a>
+							<form method="get">
+								<div class="mt-3">
+									<input name="medicineID" type="text" value="{{ medicine.id }}" hidden />
+									<button class="btn btn-main btn-round-full" title="Add to Cart" type="submit"
+										name="AddToCart" value="True">
+										<i class="fa fa-shopping-cart"></i> Add to Cart
+									</button>
+								</div>
+							</form>
 						</div>
+						{% endif %}
 					</div>
 				</div>
 				<hr />
