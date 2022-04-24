@@ -1,6 +1,11 @@
 from django.db import models
 
-from user_control.constants import MEDICINE_TYPE_CHOICES, STATUS_CHOICES
+from user_control.constants import (
+    MEDICINE_TYPE_CHOICES,
+    ORDER_STATUS_CHOICES,
+    PAYMENT_METHOD_CHOICES,
+    STATUS_CHOICES,
+)
 from user_control.models import UserModel
 
 
@@ -51,12 +56,9 @@ class MedicineModel(models.Model):
 class MedicineCartModel(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     total_items = models.IntegerField(default=0)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.medicine.name
 
     class Meta:
         verbose_name = "Medicine Cart"
@@ -83,7 +85,19 @@ class MedicineOrderModel(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     total_items = models.IntegerField(default=0)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=100, default="Pending", choices=STATUS_CHOICES)
+    transaction_id = models.CharField(max_length=200, null=True, blank=True)
+    payment_method = models.CharField(
+        max_length=20, choices=PAYMENT_METHOD_CHOICES, null=True, blank=True
+    )
+    phone = models.CharField(max_length=15, null=True, blank=True)
+    shipping_address = models.TextField(null=True, blank=True)
+    status = models.CharField(
+        max_length=100,
+        default="Pending",
+        choices=ORDER_STATUS_CHOICES,
+        null=True,
+        blank=True,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
