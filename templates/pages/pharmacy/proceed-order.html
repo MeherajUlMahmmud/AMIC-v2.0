@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load static %}
+{% load mathfilters %}
+
+{% block title %} - Proceed Order{% endblock %}
+{% block content %}
+
+<section class="page-title bg-1">
+	<div class="overlay"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="block text-center">
+					<h1 class="text-capitalize mb-5 text-lg">Proceed Order</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section doctors">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-6 text-center">
+				<div class="section-title">
+					<h2>Your Cart</h2>
+					<div class="divider mx-auto my-4"></div>
+				</div>
+			</div>
+			<div class="col-lg-6 text-center">
+				<div class="section-title">
+					<h2>Delivery Information</h2>
+					<div class="divider mx-auto my-4"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="row">
+					<div class="col-lg-3 text-center" style="flex: 2; font-size: 18px;"><strong>Medicine</strong>
+					</div>
+					<div class="col-lg-3 text-center" style="flex: 2; font-size: 18px;"><strong>Unit Price</strong>
+					</div>
+					<div class="col-lg-3 text-center" style="flex: 2; font-size: 18px;"><strong>Quantity</strong>
+					</div>
+					<div class="col-lg-3 text-center" style="flex: 2; font-size: 18px;"><strong>Total Price</strong>
+					</div>
+				</div>
+				<hr />
+
+				{% for item in cart_items %}
+				<div class="row cart-row">
+					<div class="col-lg-3" style="flex: 2">
+						<h6 class="text-center">
+							<a href="{% url 'medicine-details' item.medicine.id %}">
+								{{ item.medicine.name }}
+							</a>
+						</h6>
+					</div>
+					<div class="col-lg-3" style="flex: 2">
+						<h6 class="text-center">{{ item.medicine.price }} BDT</h6>
+					</div>
+					<div class="col-lg-3 align-items-center" style="flex: 2">
+						<div class="text-center">
+							<span class="quantity h6">{{ item.quantity }}</span>
+						</div>
+					</div>
+					<div class="col-lg-3" style="flex: 2">
+						<h6 class="text-center">{{ item.price }} BDT</h6>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			<div class="col-lg-6">
+				<form id="checkout-form" method="post">
+					{% csrf_token %}
+
+					<div class="form-group">
+						<select class="form-control" name="payment_method" id="payment_method" required>
+							<option value="">Payment Method</option>
+							<option value="Cash on Delivery">Cash on Delivery</option>
+							<option value="bKash">bKash</option>
+							<option value="Nagad">Nagad</option>
+						</select>
+					</div>
+
+					<div class="card p-3 procedure">
+						<ol type="1">
+							<li>Pay the total amount to this account <b>+8801812345678</b></li>
+							<li>Enter the <b>TRANSACTION ID</b> in the<b><i> Transaction ID</i></b> field
+							</li>
+						</ol>
+					</div>
+
+					<div class="form-group mt-4 transactionIDDiv" id="transactionIDDiv">
+						<input class="form-control" name="transaction_id" id="transaction_id"
+							placeholder="Transaction ID">
+					</div>
+
+					<div class="form-group">
+						<input class="form-control" name="phone" id="phone" placeholder="Phone Number" required>
+					</div>
+
+					<div class="form-group">
+						<input class="form-control" name="shipping_address" id="shipping_address"
+							placeholder="Shipping Address" required>
+					</div>
+
+					<div class="submit-button text-center">
+						<button class="btn btn-main" id="submit" type="submit">
+							Confirm Order
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$('.procedure').hide();
+		$('.transactionIDDiv').hide();
+		$('#payment_method').change(
+			function () {
+				if (this.value == "bKash" || this.value == "Nagad") {
+					$('.procedure').show();
+					$('.transactionIDDiv').show();
+					$('#transaction_id').attr('required', '');
+					$('#transaction_id').attr('data-error', 'This field is required.');
+				}
+				else {
+					$('.procedure').hide();
+					$('.transactionIDDiv').hide();
+					$('#transaction_id').removeAttr('required');
+					$('#transaction_id').removeAttr('data-error');
+				}
+			}
+		)
+
+		$('#submit').click(function (e) {
+			var payment_method = $('#payment_method').val();
+			var transaction_id = $('#transaction_id').val();
+			var phone = $('#phone').val();
+			var shipping_address = $('#shipping_address').val();
+
+			if (payment_method == "bKash" || payment_method == "Nagad") {
+				if (transaction_id == "") {
+					$('#transaction_id').addClass('is-invalid');
+					$('#transaction_id').attr('data-error', 'This field is required.');
+					$('#transaction_id').focus();
+					return false;
+				}
+				else {
+					$('#transaction_id').removeClass('is-invalid');
+					$('#transaction_id').removeAttr('data-error');
+					$('#checkout-form').submit();
+				}
+			}
+			else if (phone == "") {
+				$('#phone').addClass('is-invalid');
+				$('#phone').attr('data-error', 'This field is required.');
+				$('#phone').focus();
+				return false;
+			}
+			else if (shipping_address == "") {
+				$('#shipping_address').addClass('is-invalid');
+				$('#shipping_address').attr('data-error', 'This field is required.');
+				$('#shipping_address').focus();
+				return false;
+			} else {
+
+			}
+		})
+
+		$('#checkout-form').one('submit', function () {
+			// get submit button
+			var submitBtn = $('#submit');
+			// Submit the form and disable the submit button
+			setTimeout(function () {
+				disableButton(submitBtn);
+			}, 0);
+		});
+
+		function disableButton(btn) {
+			btn.attr('disabled', 'disabled');
+			btn.text('Processing...');
+		}
+	});
+
+</script>
+
+{% endblock %}
