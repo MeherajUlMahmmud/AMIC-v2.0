@@ -20,7 +20,7 @@ def home_view(request):  # The home page
     :param request:
     :return: renders the home page
     """
-    return render(request, 'index.html')
+    return render(request, "index.html")
 
 
 @unauthenticated_user  # this decorator will ensure that the user is logged in before they can access this view
@@ -37,32 +37,42 @@ def login_view(request):  # Log a user in
     if request.POST:  # If the form has been submitted...
         form = LoginForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
-            email = request.POST['email']  # Get the email
-            password = request.POST['password']  # Get the password
+            email = request.POST["email"]  # Get the email
+            password = request.POST["password"]  # Get the password
             user = authenticate(email=email, password=password)  # Authenticate the user
 
             if user and user.is_doctor:  # If the user exists and is a doctor
                 login(request, user)  # Log them in
-                if request.GET.get('next'):  # If there is a next page
-                    return redirect(request.GET.get('next'))  # Redirect to the next page
-                return redirect('doctor-dashboard')  # Redirect to the doctor dashboard
+                if request.GET.get("next"):  # If there is a next page
+                    return redirect(
+                        request.GET.get("next")
+                    )  # Redirect to the next page
+                return redirect("doctor-dashboard")  # Redirect to the doctor dashboard
 
             elif user and user.is_patient:  # If the user exists and is a patient
                 login(request, user)  # Log them in
-                if request.GET.get('next'):  # If there is a next page
-                    return redirect(request.GET.get('next'))  # Redirect to the next page
-                return redirect('patient-dashboard')  # Redirect to the patient dashboard
+                if request.GET.get("next"):  # If there is a next page
+                    return redirect(
+                        request.GET.get("next")
+                    )  # Redirect to the next page
+                return redirect(
+                    "patient-dashboard"
+                )  # Redirect to the patient dashboard
             else:  # If the user doesn't exist
-                messages.error(request, 'Email or Password is incorrect.')  # Display an error message
-                return redirect('login')  # Redirect to the login page
+                messages.error(
+                    request, "Email or Password is incorrect."
+                )  # Display an error message
+                return redirect("login")  # Redirect to the login page
         else:  # The form is invalid
-            return render(request, 'authentication/login.html', {'form': form})  # Render the login page
+            return render(
+                request, "authentication/login.html", {"form": form}
+            )  # Render the login page
 
     form = LoginForm()  # An unbound form
-    context = {  # Context to render the form
-        'form': form  # The form
-    }
-    return render(request, 'authentication/login.html', context)  # Render the login page
+    context = {"form": form}  # Context to render the form  # The form
+    return render(
+        request, "authentication/login.html", context
+    )  # Render the login page
 
 
 def logout_view(request):  # Log a user out
@@ -75,10 +85,10 @@ def logout_view(request):  # Log a user out
     :return: redirects to the home page
     """
     logout(request)  # Log the user out
-    return redirect('home')  # Redirect to the home page
+    return redirect("home")  # Redirect to the home page
 
 
-@unauthenticated_user # this decorator will ensure that the user is logged in before they can access this view
+@unauthenticated_user  # this decorator will ensure that the user is logged in before they can access this view
 def doctor_signup_view(request):  # The doctor signup page
     """
     This view will render the doctor signup page.
@@ -90,29 +100,35 @@ def doctor_signup_view(request):  # The doctor signup page
     :return: renders the doctor signup page
     """
     if request.method == "POST":  # If the form has been submitted...
-        doctor_form = DoctorRegistrationForm(request.POST)  # A form bound to the POST data
+        doctor_form = DoctorRegistrationForm(
+            request.POST
+        )  # A form bound to the POST data
         if doctor_form.is_valid():  # All validation rules pass
             doctor_form.save()  # Save the form
-            email = request.POST['email']  # Get the email
-            password = request.POST['password1']  # Get the password
-            user = authenticate(request, email=email, password=password)  # Authenticate the user
+            email = request.POST["email"]  # Get the email
+            password = request.POST["password1"]  # Get the password
+            user = authenticate(
+                request, email=email, password=password
+            )  # Authenticate the user
             user.is_doctor = True
             user.save()  # Save the user
             DoctorModel.objects.create(user=user)  # Create a doctor record for the user
             login(request, user)  # Log the user in
-            return redirect('doctor-dashboard')  # Redirect to the doctor dashboard
+            return redirect("doctor-dashboard")  # Redirect to the doctor dashboard
         else:  # The form is invalid
             context = {  # Context to render the form
-                'doctor_form': doctor_form  # The form
+                "doctor_form": doctor_form  # The form
             }
-            return render(request, 'authentication/doctor-signup.html', context)  # Render the signup page
+            return render(
+                request, "authentication/doctor-signup.html", context
+            )  # Render the signup page
     else:  # The form has not been submitted
         doctor_form = DoctorRegistrationForm()  # An unbound form
 
-    context = {  # Context to render the form
-        'doctor_form': doctor_form  # The form
-    }
-    return render(request, 'authentication/doctor-signup.html', context)  # Render the signup page
+    context = {"doctor_form": doctor_form}  # Context to render the form  # The form
+    return render(
+        request, "authentication/doctor-signup.html", context
+    )  # Render the signup page
 
 
 @unauthenticated_user
@@ -127,35 +143,45 @@ def patient_signup_view(request):  # The patient signup page
     :return: renders the patient signup page
     """
     if request.method == "POST":  # If the form has been submitted...
-        patient_form = PatientRegistrationForm(request.POST)  # A form bound to the POST data
+        patient_form = PatientRegistrationForm(
+            request.POST
+        )  # A form bound to the POST data
         if patient_form.is_valid():  # All validation rules pass
             patient_form.save()  # Save the form
-            email = request.POST['email']  # Get the email
-            password = request.POST['password1']  # Get the password
-            user = authenticate(request, email=email, password=password)  # Authenticate the user
+            email = request.POST["email"]  # Get the email
+            password = request.POST["password1"]  # Get the password
+            user = authenticate(
+                request, email=email, password=password
+            )  # Authenticate the user
             user.is_patient = True
             user.save()  # Save the user
-            PatientModel.objects.create(user=user)  # Create a patient model for the user
+            PatientModel.objects.create(
+                user=user
+            )  # Create a patient model for the user
             login(request, user)  # Log the user in
-            return redirect('patient-dashboard')  # Redirect to the patient dashboard
+            return redirect("patient-dashboard")  # Redirect to the patient dashboard
         else:  # The form is invalid
             context = {  # Context to render the form
-                'patient_form': patient_form  # The form
+                "patient_form": patient_form  # The form
             }
-            return render(request, 'authentication/patient-signup.html', context)  # Render the signup page
+            return render(
+                request, "authentication/patient-signup.html", context
+            )  # Render the signup page
     else:  # The form has not been submitted
         patient_form = PatientRegistrationForm()  # An unbound form
 
-    context = {  # Context to render the form
-        'patient_form': patient_form  # The form
-    }
-    return render(request, 'authentication/patient-signup.html', context)  # Render the signup page
+    context = {"patient_form": patient_form}  # Context to render the form  # The form
+    return render(
+        request, "authentication/patient-signup.html", context
+    )  # Render the signup page
 
 
 @login_required(
-    login_url='login')  # This decorator will ensure that the user is logged in before they can access this view
-@show_to_doctor(allowed_roles=[
-    'is_doctor'])  # This decorator will ensure that the user is a doctor before they can access this view
+    login_url="login"
+)  # This decorator will ensure that the user is logged in before they can access this view
+@show_to_doctor(
+    allowed_roles=["is_doctor"]
+)  # This decorator will ensure that the user is a doctor before they can access this view
 def doctor_dashboard(request):  # The doctor dashboard
     """
     This view will render the doctor dashboard.
@@ -166,32 +192,37 @@ def doctor_dashboard(request):  # The doctor dashboard
     profile = DoctorModel.objects.get(user=user)  # Get the doctor's profile
 
     context = {  # Context to render the view
-        'user': user,  # The user
-        'profile': profile,  # The doctor's profile
+        "user": user,  # The user
+        "profile": profile,  # The doctor's profile
     }
-    return render(request, 'pages/user-control/doctor-dashboard.html', context)  # Render the view
+    return render(
+        request, "pages/user-control/doctor-dashboard.html", context
+    )  # Render the view
 
 
-@login_required(login_url='login')
-@show_to_patient(allowed_roles=[
-    'is_patient'])  # This decorator will ensure that the user is a patient before they can access this view
+@login_required(login_url="login")
+@show_to_patient(
+    allowed_roles=["is_patient"]
+)  # This decorator will ensure that the user is a patient before they can access this view
 def patient_dashboard(request):  # The patient dashboard
     """
     This view will render the patient dashboard.
     :param request:
-    :return: renders the patient dashboard    
+    :return: renders the patient dashboard
     """
     user = request.user  # Get the user
     profile = PatientModel.objects.get(user=user)  # Get the patient's profile
 
     context = {  # Context to render the view
-        'user': user,  # The user
-        'profile': profile,  # The patient's profile
+        "user": user,  # The user
+        "profile": profile,  # The patient's profile
     }
-    return render(request, 'pages/user-control/patient-dashboard.html', context)  # Render the view
+    return render(
+        request, "pages/user-control/patient-dashboard.html", context
+    )  # Render the view
 
 
-@login_required(login_url='login')
+@login_required(login_url="login")
 def doctor_profile_view(request, pk):  # The doctor's profile page
     """
     This view will render the doctor's profile page.
@@ -213,36 +244,53 @@ def doctor_profile_view(request, pk):  # The doctor's profile page
     date_joined = calculate_age(user.date_joined)  # Get the age of the user account
 
     incomplete_profile = False
-    if not profile.bio or not profile.gender or not profile.blood_group or not profile.date_of_birth or not \
-            profile.phone or not profile.NID or not profile.specialization or not profile.BMDC_regNo:
+    if (
+        not profile.bio
+        or not profile.gender
+        or not profile.blood_group
+        or not profile.date_of_birth
+        or not profile.phone
+        or not profile.NID
+        or not profile.specialization
+        or not profile.BMDC_regNo
+    ):
         incomplete_profile = True
 
     articles = ArticleModel.objects.filter(author=user)[:4]
-    completed_appointments = AppointmentModel.objects.filter(doctor=profile, is_complete=True)
+    completed_appointments = AppointmentModel.objects.filter(
+        doctor=profile, is_complete=True
+    )
 
     is_pending = False
     if request.user.is_patient:
         patient = PatientModel.objects.get(user=request.user)
-        appointments = AppointmentModel.objects.filter(patient=patient, doctor=profile, is_accepted=False,
-                                                       is_canceled=False, is_complete=False)
+        appointments = AppointmentModel.objects.filter(
+            patient=patient,
+            doctor=profile,
+            is_accepted=False,
+            is_canceled=False,
+            is_complete=False,
+        )
         if appointments.count() > 0:
             is_pending = True
 
     context = {  # Context to render the view
-        'user': user,  # The user
-        'is_self': is_self,  # The flag
-        'profile': profile,  # The doctor's profile
-        'date_joined': date_joined,  # The account age
-        'completed_appointments': completed_appointments.count(),
-        'incomplete_profile': incomplete_profile,
-        'articles': articles,
-        'total_posts': articles.count(),
-        'is_pending': is_pending,
+        "user": user,  # The user
+        "is_self": is_self,  # The flag
+        "profile": profile,  # The doctor's profile
+        "date_joined": date_joined,  # The account age
+        "completed_appointments": completed_appointments.count(),
+        "incomplete_profile": incomplete_profile,
+        "articles": articles,
+        "total_posts": articles.count(),
+        "is_pending": is_pending,
     }
-    return render(request, "pages/user-control/doctor-profile.html", context)  # Render the view
+    return render(
+        request, "pages/user-control/doctor-profile.html", context
+    )  # Render the view
 
 
-@login_required(login_url='login')
+@login_required(login_url="login")
 def patient_profile_view(request, pk):  # The patient's profile page
     """
     This view will render the patient's profile page.
@@ -251,7 +299,7 @@ def patient_profile_view(request, pk):  # The patient's profile page
 
     This view will render the patient's profile page, along with the informations like the name, email, phone number, community posts, completed appointements, blood requests, plasma requests, etc.
 
-    :return: renders the patient's profile page    
+    :return: renders the patient's profile page
     """
     is_self = False  # The user is not the patient
 
@@ -270,37 +318,48 @@ def patient_profile_view(request, pk):  # The patient's profile page
         age = calculate_age(profile.date_of_birth)  # Get the age of the patient
 
     community_posts = CommunityPostModel.objects.filter(author=user)[:4]
-    completed_appointments = AppointmentModel.objects.filter(patient=profile, is_complete=True)
+    completed_appointments = AppointmentModel.objects.filter(
+        patient=profile, is_complete=True
+    )
 
     user = UserModel.objects.get(id=pk)
     # blood_requests = BloodRequestModel.objects.filter(user=user).order_by('-posted_on')
     # plasma_requests = PlasmaRequestModel.objects.filter(user=user).order_by('-posted_on')
 
     incomplete_profile = False
-    if not profile.gender or not profile.blood_group or not profile.date_of_birth or not \
-            profile.phone or not profile.height or not profile.weight or not profile.address:
+    if (
+        not profile.gender
+        or not profile.blood_group
+        or not profile.date_of_birth
+        or not profile.phone
+        or not profile.height
+        or not profile.weight
+        or not profile.address
+    ):
         incomplete_profile = True
 
     context = {  # Context to render the view
-        'user': user,  # The user
-        'is_self': is_self,  # The flag
-        'has_access': has_access,
-        'age': age,  # The age
-        'profile': profile,  # The patient's profile
-        'date_joined': date_joined,  # The account age
-        'incomplete_profile': incomplete_profile,
-        'community_posts': community_posts,
-        'completed_appointments': completed_appointments.count(),
-        'total_posts': community_posts.count(),
+        "user": user,  # The user
+        "is_self": is_self,  # The flag
+        "has_access": has_access,
+        "age": age,  # The age
+        "profile": profile,  # The patient's profile
+        "date_joined": date_joined,  # The account age
+        "incomplete_profile": incomplete_profile,
+        "community_posts": community_posts,
+        "completed_appointments": completed_appointments.count(),
+        "total_posts": community_posts.count(),
         # 'blood_requests': blood_requests[:4],
         # 'total_blood_requests': blood_requests.count(),
         # 'plasma_requests': plasma_requests[:4],
         # 'total_plasma_requests': plasma_requests.count(),
     }
-    return render(request, "pages/user-control/patient-profile.html", context)  # Render the view
+    return render(
+        request, "pages/user-control/patient-profile.html", context
+    )  # Render the view
 
 
-@login_required(login_url='login')
+@login_required(login_url="login")
 def doctor_edit_profile(request):  # The doctor's profile edit page
     """
     This view will render the doctor's profile edit page.
@@ -313,23 +372,31 @@ def doctor_edit_profile(request):  # The doctor's profile edit page
     user = request.user
     profile = DoctorModel.objects.get(user=user)  # Get the doctor's profile
 
-    form = DoctorEditProfileForm(instance=profile)  # A form bound to the doctor's profile
-    if request.method == 'POST':  # If the form has been submitted...
-        form = DoctorEditProfileForm(request.POST, request.FILES, instance=profile)  # A form bound to the POST data
+    form = DoctorEditProfileForm(
+        instance=profile
+    )  # A form bound to the doctor's profile
+    if request.method == "POST":  # If the form has been submitted...
+        form = DoctorEditProfileForm(
+            request.POST, request.FILES, instance=profile
+        )  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             form.save()  # Save the form
-            return redirect('doctor-profile', user.id)  # Redirect to the doctor's profile
+            return redirect(
+                "doctor-profile", user.id
+            )  # Redirect to the doctor's profile
         else:  # The form is invalid
-            return redirect('edit-profile')  # Redirect to the edit profile page
+            return redirect("edit-profile")  # Redirect to the edit profile page
 
     context = {  # Context to render the view
-        'form': form,  # The form
-        'profile': profile,  # The doctor's profile
+        "form": form,  # The form
+        "profile": profile,  # The doctor's profile
     }
-    return render(request, 'pages/user-control/edit-profile.html', context)  # Render the view
+    return render(
+        request, "pages/user-control/edit-profile.html", context
+    )  # Render the view
 
 
-@login_required(login_url='login')
+@login_required(login_url="login")
 def patient_edit_profile(request):  # The patient's profile edit page
     """
     This view will render the patient's profile edit page.
@@ -342,20 +409,28 @@ def patient_edit_profile(request):  # The patient's profile edit page
     user = request.user
     profile = PatientModel.objects.get(user=user)  # Get the patient's profile
 
-    form = PatientEditProfileForm(instance=profile)  # A form bound to the patient's profile
-    if request.method == 'POST':  # If the form has been submitted...
-        form = PatientEditProfileForm(request.POST, request.FILES, instance=profile)  # A form bound to the POST data
+    form = PatientEditProfileForm(
+        instance=profile
+    )  # A form bound to the patient's profile
+    if request.method == "POST":  # If the form has been submitted...
+        form = PatientEditProfileForm(
+            request.POST, request.FILES, instance=profile
+        )  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             form.save()  # Save the form
-            return redirect('patient-profile', user.id)  # Redirect to the patient's profile
+            return redirect(
+                "patient-profile", user.id
+            )  # Redirect to the patient's profile
         else:  # The form is invalid
-            return redirect('edit-profile')  # Redirect to the edit profile page
+            return redirect("edit-profile")  # Redirect to the edit profile page
 
     context = {  # Context to render the view
-        'form': form,  # The form
-        'profile': profile,  # The patient's profile
+        "form": form,  # The form
+        "profile": profile,  # The patient's profile
     }
-    return render(request, 'pages/user-control/edit-profile.html', context)  # Render the view
+    return render(
+        request, "pages/user-control/edit-profile.html", context
+    )  # Render the view
 
 
 def contact_view(request):  # The contact page
@@ -368,23 +443,29 @@ def contact_view(request):  # The contact page
 
     :return: renders the contact page
     """
-    
-    if request.method == 'POST':  # If the form has been submitted...
-        name = request.POST['name']  # Get the name
-        email_add = request.POST['email']  # Get the email
-        subject = request.POST['subject']  # Get the subject
-        message = request.POST['message']  # Get the message
 
-        FeedbackModel.objects.create(name=name, email=email_add, subject=subject, message=message)  # Create a feedback
+    if request.method == "POST":  # If the form has been submitted...
+        name = request.POST["name"]  # Get the name
+        email_add = request.POST["email"]  # Get the email
+        subject = request.POST["subject"]  # Get the subject
+        message = request.POST["message"]  # Get the message
 
-        messages.success(request, "Feedback sent successfully.")  # Show a success message
+        FeedbackModel.objects.create(
+            name=name, email=email_add, subject=subject, message=message
+        )  # Create a feedback
 
-        return render(request, 'pages/utils/contact.html')  # Redirect to the contact page
+        messages.success(
+            request, "Feedback sent successfully."
+        )  # Show a success message
 
-    return render(request, 'pages/utils/contact.html')  # Render the view
+        return render(
+            request, "pages/utils/contact.html"
+        )  # Redirect to the contact page
+
+    return render(request, "pages/utils/contact.html")  # Render the view
 
 
-@login_required(login_url='login')
+@login_required(login_url="login")
 def account_settings_view(request):  # The account settings page
     """
     This view will render the account settings page.
@@ -395,33 +476,49 @@ def account_settings_view(request):  # The account settings page
 
     :return: renders the account settings page
     """
-    
+
     user = request.user  # Get the user
 
-    information_form = AccountInformationForm(instance=user)  # A form bound to the user's account information
-    password_form = PasswordChangeForm(request.user)  # A form bound to the user's password change
-    if request.method == 'POST':  # If the form has been submitted...
-        information_form = AccountInformationForm(request.POST, instance=user)  # A form bound to the POST data
-        password_form = PasswordChangeForm(request.user, request.POST)  # A form bound to the POST data
+    information_form = AccountInformationForm(
+        instance=user
+    )  # A form bound to the user's account information
+    password_form = PasswordChangeForm(
+        request.user
+    )  # A form bound to the user's password change
+    if request.method == "POST":  # If the form has been submitted...
+        information_form = AccountInformationForm(
+            request.POST, instance=user
+        )  # A form bound to the POST data
+        password_form = PasswordChangeForm(
+            request.user, request.POST
+        )  # A form bound to the POST data
 
         if information_form.is_valid():  # All validation rules pass
             information_form.save()  # Save the form
             user.save()  # Save the user
-            return redirect('account-settings')  # Redirect to the account settings page
+            return redirect("account-settings")  # Redirect to the account settings page
 
         elif password_form.is_valid():  # All validation rules pass
             user = password_form.save()  # Save the user
-            update_session_auth_hash(request, user)  # Update the session with the new password
-            messages.success(request, 'Your password was successfully updated!')  # Show a success message
-            return redirect('account-settings')  # Redirect to the account settings page
+            update_session_auth_hash(
+                request, user
+            )  # Update the session with the new password
+            messages.success(
+                request, "Your password was successfully updated!"
+            )  # Show a success message
+            return redirect("account-settings")  # Redirect to the account settings page
         else:  # The form is invalid
             context = {  # Context to render the view
-                'information_form': information_form,  # The form
-                'password_form': password_form,  # The form
+                "information_form": information_form,  # The form
+                "password_form": password_form,  # The form
             }
-            return render(request, 'pages/user-control/account-settings.html', context)  # Render the view
+            return render(
+                request, "pages/user-control/account-settings.html", context
+            )  # Render the view
     context = {  # Context to render the view
-        'information_form': information_form,  # The form
-        'password_form': password_form,  # The form
+        "information_form": information_form,  # The form
+        "password_form": password_form,  # The form
     }
-    return render(request, 'pages/user-control/account-settings.html', context)  # Render the view
+    return render(
+        request, "pages/user-control/account-settings.html", context
+    )  # Render the view
