@@ -24,7 +24,11 @@
 		<div class="row justify-content-center">
 			<div class="col-lg-6 text-center">
 				<div class="section-title">
-					<h2>Medicine Sections</h2>
+					<h2>Medicines</h2>
+					<a href="{% url 'pharmacy-cart' %}" class="btn btn-main btn-round-full">
+						<i class="fa fa-shopping-cart"></i>
+						<span>( {{ total_cart_items }} )</span>
+					</a>
 					<div class="divider mx-auto my-4"></div>
 				</div>
 			</div>
@@ -62,15 +66,18 @@
 						</div>
 					</div>
 					<div class="content mt-3">
-						<a class="h4" href="">
+						<a class="h4" href="{% url 'medicine-details' medicine.id %}">
 							{{ medicine.name }}
 						</a>
 						<br />
+						{% comment %}
 						<small class="text-color-2">{{ medicine.discount }}% off</small>
+						{% endcomment %}
 						<p>{{ medicine.pharmaceutical_name }}</p>
 					</div>
 					<div class="content mt-3 mb-3">
 						<h5 class="mb-0">
+							{% comment %}
 							{% if medicine.discount == 0.00 %}
 							Price:
 							<span class="text-color-2">{{ medicine.price|floatformat:2 }} BDT</span>
@@ -90,13 +97,22 @@
 							{% endwith %}
 
 							{% endif %}
+							{% endcomment %}
+							Price:
+							<span class="text-color-2">{{ medicine.price|floatformat:2 }} BDT</span>
 						</h5>
-						<p>{{ medicine.pharmaceutical_name }}</p>
-						<div class="mt-3">
-							<a href="{{ medicine.url }}" class="btn btn-main btn-block btn-round-full">
-								<i class="fa fa-shopping-cart"></i> Buy Now
-							</a>
-						</div>
+
+						{% if request.user.is_authenticated %}
+						<form method="get">
+							<div class="mt-3">
+								<input name="medicineID" type="text" value="{{ medicine.id }}" hidden />
+								<button class="btn btn-main btn-block btn-round-full" title="Add to Cart" type="submit"
+									name="AddToCart" value="True">
+									<i class="fa fa-shopping-cart"></i> Add to Cart
+								</button>
+							</div>
+						</form>
+						{% endif %}
 					</div>
 				</div>
 			</div>
