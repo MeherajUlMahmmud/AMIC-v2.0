@@ -87,6 +87,55 @@ def pharmacy_medicine_view(request, medicine_id):
         cart_items = MedicineCartItemModel.objects.filter(cart=cart)
         total_cart_items = cart_items.count()  # Total cart items
 
+    if request.GET.get("AddToCart"):  # If the user clicked the add to cart button
+        item_id = int(request.GET.get("medicineID"))  # Get the food id
+        medicine_item = MedicineModel.objects.get(id=item_id)  # Get the food item
+        if total_cart_items == 0:  # If the total cart items is 0
+            MedicineCartItemModel.objects.create(
+                cart=cart,
+                medicine=medicine_item,
+                quantity=1,
+                price=medicine_item.price,
+            )  # Create a cart item
+            cart.total_items = cart.total_items + 1  # Increase the total cart items
+            cart.total_price = (
+                cart.total_price + medicine_item.price
+            )  # Increase the total cart price
+            cart.save()  # Save the cart
+        else:  # If the total cart items is not 0
+            for item in cart_items:  # For each cart item
+                if (
+                    item.medicine.name == medicine_item.name
+                ):  # If the cart item name is the same as the food item name
+                    item.quantity += 1  # Increase the quantity
+                    item.price = (
+                        item.quantity * item.medicine.price
+                    )  # Set the item total
+                    item.save()  # Save the cart item
+
+                    cart.total_items = (
+                        cart.total_items + 1
+                    )  # Increase the total cart items
+                    cart.total_price = (
+                        cart.total_price + medicine_item.price
+                    )  # Increase the total cart price
+                    cart.save()  # Save the cart
+                    return redirect(
+                        "medicine-details", medicine.id
+                    )  # Redirect to the menu page
+
+            MedicineCartItemModel.objects.create(
+                cart=cart,
+                medicine=medicine_item,
+                quantity=1,
+                price=medicine_item.price,
+            )  # Create a cart item if the cart item name is not the same as the food item name
+            cart.total_items = cart.total_items + 1  # Increase the total cart items
+            cart.total_price = (
+                cart.total_price + medicine_item.price
+            )  # Increase the total cart price
+            cart.save()  # Save the cart
+
     context = {"medicine": medicine, "total_cart_items": total_cart_items}
     return render(request, "pages/pharmacy/pharmacy_medicine_details.html", context)
 
