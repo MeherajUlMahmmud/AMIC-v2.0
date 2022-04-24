@@ -1,1 +1,109 @@
-<h1>Pharmacy</h1>
+{% extends "base.html" %}
+{% load static %}
+{% load mathfilters %}
+
+{% block title %} - Pharmacy{% endblock %}
+{% block content %}
+
+<section class="page-title bg-1">
+	<div class="overlay"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="block text-center">
+					<span class="text-white">Buy Your Meds</span>
+					<h1 class="text-capitalize mb-5 text-lg">Pharmacy</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section doctors">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-6 text-center">
+				<div class="section-title">
+					<h2>Medicine Sections</h2>
+					<div class="divider mx-auto my-4"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12 text-center mb-3">
+			<div class="btn-group btn-group-toggle " data-toggle="buttons">
+				<label class="btn active ">
+					<input type="radio" name="shuffle-filter" value="all" checked="checked" />All Medicines
+				</label>
+
+				{% for section in sections %}
+				<label class="btn ">
+					<input type="radio" name="shuffle-filter" value="{{ section }}" />{{ section }}
+				</label>
+				{% endfor %}
+
+			</div>
+		</div>
+
+		<div class="row shuffle-wrapper portfolio-gallery">
+			{% for medicine in medicines %}
+			<div class="col-lg-3 col-sm-6 col-md-6 m-2 shuffle-item card"
+				data-groups="[&quot;{{ medicine.medicine_section }}&quot;]">
+				<div class="position-relative doctor-inner-box">
+					<div class="doctor-profile">
+						<div class="medicine-img">
+							{% if medicine.image %}
+							<img src="{{ medicine.image.url }}" alt="{{ medicine.name }}" class="img-fluid w-100">
+
+							{% else %}
+							<img src="{% static 'images/placeholders/user-placeholder.jpg' %}" alt="{{ medicine.name }}"
+								class="img-fluid w-100">
+							{% endif %}
+						</div>
+					</div>
+					<div class="content mt-3">
+						<a class="h4" href="">
+							{{ medicine.name }}
+						</a>
+						<br />
+						<small class="text-color-2">{{ medicine.discount }}% off</small>
+						<p>{{ medicine.pharmaceutical_name }}</p>
+					</div>
+					<div class="content mt-3 mb-3">
+						<h5 class="mb-0">
+							{% if medicine.discount == 0.00 %}
+							Price:
+							<span class="text-color-2">{{ medicine.price|floatformat:2 }} BDT</span>
+
+							{% else %}
+
+							{% with discount=medicine.discount|div:100 %}
+							{% with discounted_amount=medicine.price|mul:discount %}
+							Price:
+							<span class="text-color-2">
+								{{ medicine.price|sub:discounted_amount|floatformat:2 }} BDT
+							</span>
+							<strike class="text-color-2">
+								<small>({{ medicine.price|floatformat:2 }} BDT)</small>
+							</strike>
+							{% endwith %}
+							{% endwith %}
+
+							{% endif %}
+						</h5>
+						<p>{{ medicine.pharmaceutical_name }}</p>
+						<div class="mt-3">
+							<a href="{{ medicine.url }}" class="btn btn-main btn-block btn-round-full">
+								<i class="fa fa-shopping-cart"></i> Buy Now
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+
+		</div>
+	</div>
+</section>
+
+{% endblock %}
