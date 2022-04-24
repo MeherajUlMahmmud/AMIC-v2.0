@@ -18,9 +18,24 @@ BLOOD_GROUP_CHOICES = [
 STATUS_CHOICES = [
     ("", "Select Status"),
     ("P", "Pending"),
+    ("A", "Approved"),
     ("C", "Completed"),
     ("I", "In Progress"),
     ("R", "Rejected"),
+]
+ORDER_STATUS_CHOICES = [
+    ("", "Select Status"),
+    ("Pending", "Pending"),
+    ("Approved", "Approved"),
+    ("Completed", "Completed"),
+    ("In Progress", "In Progress"),
+    ("Rejected", "Rejected"),
+]
+PAYMENT_METHOD_CHOICES = [  # A list of payment methods
+    ("", "Payment Method"),
+    ("Cash on Delivery", "Cash on Delivery"),
+    ("bKash", "bKash"),
+    ("Nagad", "Nagad"),
 ]
 TYPES_CHOICES = [
     ("", "Select Ambulance Type"),
@@ -29,6 +44,23 @@ TYPES_CHOICES = [
     ("Cardiac", "Cardiac"),
     ("ICU", "ICU"),
     ("Freezer", "Freezer"),
+]
+MEDICINE_TYPE_CHOICES = [
+    ("", "Select Medicine Type"),
+    ("Tablet", "Tablet"),
+    ("Capsule", "Capsule"),
+    ("Syrup", "Syrup"),
+    ("Injection", "Injection"),
+    ("Drops", "Drops"),
+    ("Cream", "Cream"),
+    ("Ointment", "Ointment"),
+    ("Powder", "Powder"),
+    ("Lotion", "Lotion"),
+    ("Gel", "Gel"),
+    ("Aerosols", "Aerosols"),
+    ("Suspension", "Suspension"),
+    ("Solution", "Solution"),
+    ("Inhaler", "Inhaler"),
 ]
 CITY_CHOICES = [
     ("", "Select City"),
