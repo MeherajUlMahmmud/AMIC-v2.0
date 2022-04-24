@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+{% load static %}{% load mathfilters %}
+
+{% block title %} - Medicine Detail{% endblock %}
+
+{% block content %}
+
+<section>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 col-md-12">
+				<div class="blog-breadcrumbs-area">
+					<div class="blog-breadcrumbs-left">
+						<h2>Medicine Details</h2>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-12">
+			</div>
+			<div class="col-lg-3 col-md-12">
+				<!-- cart -->
+				<div class="text-center">
+					<a href="{% url 'pharmacy-cart' %}" class="btn btn-main btn-round-full">
+						<i class="fa fa-shopping-cart"></i>
+						<span>( {{ total_cart_items }} )</span>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="row mt-3">
+			<div class="col-lg-12">
+				<div class="blog-breadcrumbs-right">
+					<ol class="breadcrumb">
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row mb-5">
+			<div class="col-lg-12">
+
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="text-center">
+							<img src="{{ medicine.image.url }}" class="img-fluid mb-2" alt="" height="250px"
+								width="350px">
+						</div>
+					</div>
+
+					<div class="col-lg-6">
+						<h4><span class="text-color-2">
+								{{ medicine.name }}
+							</span>
+						</h4>
+						<small class="text-color-2">
+							{{ medicine.type }}
+						</small>
+						<br /><br />
+
+						<h6>Generics:
+							<span class="text-color-2">
+								{{ medicine.generics }}
+							</span>
+						</h6>
+						<h6>
+							<span class="text-color-2">
+								{{ medicine.pharmaceutical_name }}
+							</span>
+						</h6>
+						<h6>
+							{% comment %}
+							{% if medicine.discount == 0.00 %}
+							Price:
+							<span class="text-color-2">{{ medicine.price|floatformat:2 }} BDT</span>
+
+							{% else %}
+
+							{% with discount=medicine.discount|div:100 %}
+							{% with discounted_amount=medicine.price|mul:discount %}
+							<span class="text-color-2">
+								{{ medicine.price|sub:discounted_amount|floatformat:2 }} BDT
+							</span>
+							<strike class="text-color-2">
+								<small>({{ medicine.price|floatformat:2 }} BDT)</small>
+							</strike>
+							{% endwith %}
+							{% endwith %}
+
+							{% endif %}
+							{% endcomment %}
+							Price:
+							<span class="text-color-2">{{ medicine.price|floatformat:2 }} BDT</span>
+						</h6>
+						<br /><br />
+						<div class="text-center">
+							<a href="" class="btn btn-main btn-round-full">
+								<i class="fa fa-shopping-cart"></i> Add to Cart
+							</a>
+						</div>
+					</div>
+				</div>
+				<hr />
+
+				<div class="row mt-5">
+					<div class="col-lg-12">
+						<div>
+							<h3>Generic</h3>
+							<p>
+								{{ medicine.generics }}
+							</p>
+							<hr />
+						</div>
+						<div>
+							<h3>Indications</h3>
+							<p>
+								{{ medicine.indications }}
+							</p>
+							<hr />
+						</div>
+						<div>
+							<h3>Dosage & Administration</h3>
+							<p>
+								{{ medicine.dosage }}
+							</p>
+							<hr />
+						</div>
+						<div>
+							<h3>Interaction</h3>
+							<p>
+								{{ medicine.interaction }}
+							</p>
+							<hr />
+						</div>
+						<div>
+							<h3>Contraindications</h3>
+							<p>
+								{{ medicine.contraindications }}
+							</p>
+							<hr />
+						</div>
+						<div>
+							<h3>Side Effects</h3>
+							<p>
+								{{ medicine.side_effects }}
+							</p>
+							<hr />
+						</div>
+						<div>
+							<h3>Pregnancy & Lactation</h3>
+							<p>
+								{{ medicine.pregnancy_lactation }}
+							</p>
+							<hr />
+						</div>
+						<div>
+							<h3>Precautions & Warnings</h3>
+							<p>
+								{{ medicine.precautions }}
+							</p>
+							<hr />
+						</div>
+						<div>
+							<h3>Therapeutic Class</h3>
+							<p>
+								{{ medicine.theraputic_class }}
+							</p>
+							<hr />
+						</div>
+						<div>
+							<h3>Storage Conditions</h3>
+							<p>
+								{{ medicine.storage }}
+							</p>
+							<hr />
+						</div>
+						<div>
+							<h3>Pharmaceutical Name</h3>
+							<p>
+								{{ medicine.pharmaceutical_name }}
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock %}
