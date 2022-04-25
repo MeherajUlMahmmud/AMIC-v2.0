@@ -156,7 +156,7 @@
 				else {
 					$('#transaction_id').removeClass('is-invalid');
 					$('#transaction_id').removeAttr('data-error');
-					$('#checkout-form').submit();
+
 				}
 			}
 			else if (phone == "") {
@@ -171,7 +171,7 @@
 				$('#shipping_address').focus();
 				return false;
 			} else {
-
+				$('#checkout-form').submit();
 			}
 		})
 
