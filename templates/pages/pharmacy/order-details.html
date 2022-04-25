@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% load mathfilters %}
+
+{% block title %} - Order Details{% endblock %}
+{% block content %}
+
+<section class="page-title bg-1">
+	<div class="overlay"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="block text-center">
+					<h1 class="text-capitalize mb-5 text-lg">Order Details</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section doctors">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-6 text-center">
+				<div class="section-title">
+					<h2>Ordered Items</h2>
+					<div class="divider mx-auto my-4"></div>
+				</div>
+			</div>
+			<div class="col-lg-6 text-center">
+				<div class="section-title">
+					<h2>Order Details</h2>
+					<div class="divider mx-auto my-4"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="row">
+					<div class="col-lg-3 text-center" style="flex: 2; font-size: 18px;"><strong>Medicine</strong>
+					</div>
+					<div class="col-lg-3 text-center" style="flex: 2; font-size: 18px;"><strong>Unit Price</strong>
+					</div>
+					<div class="col-lg-3 text-center" style="flex: 2; font-size: 18px;"><strong>Quantity</strong>
+					</div>
+					<div class="col-lg-3 text-center" style="flex: 2; font-size: 18px;"><strong>Total Price</strong>
+					</div>
+				</div>
+				<hr />
+
+				{% for item in order_items %}
+				<div class="row cart-row">
+					<div class="col-lg-3" style="flex: 2">
+						<h6 class="text-center">
+							<a href="{% url 'medicine-details' item.medicine.id %}">
+								{{ item.medicine.name }}
+							</a>
+						</h6>
+					</div>
+					<div class="col-lg-3" style="flex: 2">
+						<h6 class="text-center">{{ item.medicine.price }} BDT</h6>
+					</div>
+					<div class="col-lg-3 align-items-center" style="flex: 2">
+						<div class="text-center">
+							<span class="quantity h6">{{ item.quantity }}</span>
+						</div>
+					</div>
+					<div class="col-lg-3" style="flex: 2">
+						<h6 class="text-center">{{ item.price }} BDT</h6>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			<div class="col-lg-6">
+				<h5 class="card-text">
+					Order Date: <span class="text-color-2">{{ order.created_at }}</span><br><br>
+					Order Status: <span class="text-color-2">{{ order.status }}</span><br><br>
+					Order Total: <span class="text-color-2">{{ order.total_price }}</span><br><br>
+					Grand Total: <span class="text-color-2">{{ grand_total }}</span>
+				</h5>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
