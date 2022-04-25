@@ -211,20 +211,20 @@ def proceed_order(request):  # Proceed Order Page
     total = cart.total_price  # Total price of the cart
 
     form = OrderForm()  # Create an order form
-    # if request.method == "POST":  # If the request method is POST
-    #     form = OrderForm(request.POST)  # Get the form data
-    #     if form.is_valid():  # If the form is valid
-    #         order = form.save(commit=False)  # Save the form data
-    #         order.total_items = cart.total_items  # Set the total items
-    #         order.total_price = cart.total_price  # Set the total price
-    #         order.user = request.user  # Set the user
-    #         order.save()  # Save the order
-    #         cartItemToOrderItem(
-    #             order, cart_items
-    #         )  # Save the cart items to the order items
-    #         return redirect(
-    #             "confirm-order", order.id
-    #         )  # Redirect to the confirm order page
+    if request.method == "POST":  # If the request method is POST
+        form = OrderForm(request.POST)  # Get the form data
+        if form.is_valid():  # If the form is valid
+            order = form.save(commit=False)  # Save the form data
+            order.total_items = cart.total_items  # Set the total items
+            order.total_price = cart.total_price  # Set the total price
+            order.user = request.user  # Set the user
+            order.save()  # Save the order
+            cartItemToOrderItem(
+                order, cart_items
+            )  # Save the cart items to the order items
+            return redirect(
+                "confirm-order", order.id
+            )  # Redirect to the confirm order page
 
     context = {  # Context for the proceed order page
         "total_cart_items": total_cart_items,  # Total cart items
@@ -264,7 +264,7 @@ def order_details(request, pk):  # Order Details Page
 
     order = MedicineOrderModel.objects.get(id=pk)  # Get the order
     order_items = MedicineOrderItemModel.objects.filter(
-        order=order
+        medicine_order=order
     )  # Get the order items
 
     context = {  # Context for the order details page
