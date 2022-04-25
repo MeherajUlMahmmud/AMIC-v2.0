@@ -101,9 +101,6 @@ class MedicineOrderModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.medicine.name
-
     class Meta:
         verbose_name = "Medicine Order"
         verbose_name_plural = "Medicine Orders"
