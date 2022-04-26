@@ -5,16 +5,8 @@ from django.db import models
 from .constants import *
 
 
-# User manager for the User Model
 class MyUserManager(BaseUserManager):
-    """
-    This is a custom manager for the Custom User model.
-    """
-
     def create_user(self, email, name, password=None):
-        """
-        Creates and saves a User with the given email and password.
-        """
         if not email:
             raise ValueError("Must have an email address")
 
@@ -31,9 +23,6 @@ class MyUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, name, password):
-        """
-        Creates and saves a superuser with the given email and password.
-        """
         user = self.create_user(
             email=self.normalize_email(email),
             name=name,
@@ -46,34 +35,21 @@ class MyUserManager(BaseUserManager):
         return user
 
 
-# User Model (Common for all the users)
 class UserModel(AbstractBaseUser, PermissionsMixin):
-    """
-    This is the Custom User model.
-    This is the model that will be used to create the users in the system.
-    This model includes the following fields:
-    email: The email address of the user.
-    name: The name of the user.
-    is_active: A boolean field that specifies whether the user is active or not.
-    is_staff: A boolean field that specifies whether the user is a staff member or not.
-    is_admin: A boolean field that specifies whether the user is an admin or not.
-    date_joined: A date field that specifies when the user joined the system.
-    """
-
-    email = models.EmailField(max_length=255, unique=True)  # Email
-    name = models.CharField(max_length=255)  # Name
-    is_patient = models.BooleanField(default=False)  # True if patient
-    is_doctor = models.BooleanField(default=False)  # True if doctor
-    is_active = models.BooleanField(default=True)  # True if active
+    email = models.EmailField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
+    is_patient = models.BooleanField(default=False)
+    is_doctor = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["name"]  # Email & Password are required by default.
+    REQUIRED_FIELDS = ["name"]
 
-    objects = MyUserManager()  # User manager for the User Model
+    objects = MyUserManager()
 
     def __str__(self):
         return self.email
@@ -89,27 +65,9 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = "Users"
 
 
-# Patient Model (Only for Patients / Patients' Profile)
 class PatientModel(models.Model):
-    """
-    This is the model that will be used to create the patient's profile.
-    This model includes the following fields:
-    user: A one-to-one field that references the User model.
-    image: A file field that stores the patient's image.
-    gender: The gender of the patient.
-    blood_group: The blood group of the patient
-    height: The height of the patient in inches.
-    weight: The weight of the patient in pounds.
-    date_of_birth: The date of birth of the patient.
-    phone: The phone number of the patient.
-    address: The address of the patient.
-    last_donation: The date of the last blood donation of the patient.
-    """
-
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE)
-    image = models.ImageField(
-        upload_to="images/users/", null=True, blank=True
-    )  # Patient Profile Picture
+    image = models.ImageField(upload_to="images/users/", null=True, blank=True)
     gender = models.CharField(
         max_length=10, choices=GENDER_CHOICES, null=True, blank=True
     )
@@ -147,12 +105,6 @@ class PatientModel(models.Model):
         verbose_name_plural = "Patients"
 
 
-"""
-Specialization Model for Doctors in order to make the 
-specialization field in Doctor Profile dynamic
-"""
-
-
 class SpecializationModel(models.Model):
     specialization = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -166,30 +118,10 @@ class SpecializationModel(models.Model):
         verbose_name_plural = "Specializations"
 
 
-# Doctor Model (only for Doctors / Doctors' Profile)
 class DoctorModel(models.Model):
-    """
-    This is the model that will be used to create the doctor's profile.
-    This model includes the following fields:
-    user: A one-to-one field that references the User model.
-    bio: A text field that stores the doctor's bio.
-    image: A file field that stores the doctor's image.
-    gender: The gender of the patient.
-    blood_group: The blood group of the doctor
-    date_of_birth: The date of birth of the doctor.
-    phone: The phone number of the doctor.
-    nid: The national id card number of the doctor.
-    specialization: The specialization of the doctor.
-    bmdc_reg_no: The BMDC registration number of the doctor.
-    last_donation: The date of the last blood donation of the doctor.
-
-    """
-
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE)
     bio = models.TextField(null=True, blank=True)
-    image = models.ImageField(
-        upload_to="images/users/", null=True, blank=True
-    )  # Doctor Profile Picture
+    image = models.ImageField(upload_to="images/users/", null=True, blank=True)
     gender = models.CharField(max_length=10, null=True, blank=True)
     blood_group = models.CharField(max_length=10, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
@@ -222,21 +154,11 @@ class DoctorModel(models.Model):
         verbose_name_plural = "Doctors"
 
 
-# Responses from Contact Us form will be saved here
 class FeedbackModel(models.Model):
-    """
-    This is the model that will be used to store the feedback data.
-    This model includes the following fields:
-    name: The name of the user.
-    email: The email of the user.
-    subject: The subject of the feedback.
-    message: The message of the feedback.
-    """
-
-    name = models.CharField(max_length=255)  # name of the user
-    email = models.CharField(max_length=255)  # email of the user
-    subject = models.CharField(max_length=255)  # subject of the message
-    message = models.TextField()  # message body
+    name = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
