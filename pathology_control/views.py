@@ -1,13 +1,15 @@
 from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
 from pathology_control.forms import TestBookingForm
 
 from pathology_control.models import TestModel
 
 
+@login_required(login_url="login")
 def pathology_home_view(request):
     bookings = TestModel.objects.filter(user=request.user).order_by("-created_at")
 
-    pending_bookings = bookings.filter(status="P")
+    pending_bookings = bookings.filter(status="Pending")
     completed_bookings = bookings.filter(status="C")
     in_progress_bookings = bookings.filter(status="I")
     rejected_bookings = bookings.filter(status="R")
