@@ -17,11 +17,11 @@ BLOOD_GROUP_CHOICES = [
 ]
 STATUS_CHOICES = [
     ("", "Select Status"),
-    ("P", "Pending"),
-    ("A", "Approved"),
-    ("C", "Completed"),
-    ("I", "In Progress"),
-    ("R", "Rejected"),
+    ("Pending", "Pending"),
+    ("Approved", "Approved"),
+    ("Completed", "Completed"),
+    ("In Progress", "In Progress"),
+    ("Rejected", "Rejected"),
 ]
 ORDER_STATUS_CHOICES = [
     ("", "Select Status"),

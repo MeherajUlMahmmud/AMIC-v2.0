@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}{% load mathfilters %}
+{% load static %}
 
 {% block title %} - Medicine Detail{% endblock %}
 
@@ -70,26 +70,6 @@
 							</span>
 						</h6>
 						<h6>
-							{% comment %}
-							{% if medicine.discount == 0.00 %}
-							Price:
-							<span class="text-color-2">{{ medicine.price|floatformat:2 }} BDT</span>
-
-							{% else %}
-
-							{% with discount=medicine.discount|div:100 %}
-							{% with discounted_amount=medicine.price|mul:discount %}
-							<span class="text-color-2">
-								{{ medicine.price|sub:discounted_amount|floatformat:2 }} BDT
-							</span>
-							<strike class="text-color-2">
-								<small>({{ medicine.price|floatformat:2 }} BDT)</small>
-							</strike>
-							{% endwith %}
-							{% endwith %}
-
-							{% endif %}
-							{% endcomment %}
 							Price:
 							<span class="text-color-2">{{ medicine.price|floatformat:2 }} BDT</span>
 							({{ medicine.price_details }})

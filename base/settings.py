@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     "django_filters",
     "widget_tweaks",
     "jazzmin",
-    "mathfilters",
     # required
     "django.contrib.admin",
     "django.contrib.auth",

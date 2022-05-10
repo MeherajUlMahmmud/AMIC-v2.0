@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load static %}
-{% load mathfilters %}
 
 {% block title %} - Pharmacy{% endblock %}
 {% block content %}
@@ -69,35 +68,10 @@
 						<a class="h4" href="{% url 'medicine-details' medicine.id %}">
 							{{ medicine.name }}
 						</a>
-						<br />
-						{% comment %}
-						<small class="text-color-2">{{ medicine.discount }}% off</small>
-						{% endcomment %}
 						<p>{{ medicine.pharmaceutical_name }}</p>
 					</div>
 					<div class="content mt-3 mb-3">
 						<h5 class="mb-0">
-							{% comment %}
-							{% if medicine.discount == 0.00 %}
-							Price:
-							<span class="text-color-2">{{ medicine.price|floatformat:2 }} BDT</span>
-
-							{% else %}
-
-							{% with discount=medicine.discount|div:100 %}
-							{% with discounted_amount=medicine.price|mul:discount %}
-							Price:
-							<span class="text-color-2">
-								{{ medicine.price|sub:discounted_amount|floatformat:2 }} BDT
-							</span>
-							<strike class="text-color-2">
-								<small>({{ medicine.price|floatformat:2 }} BDT)</small>
-							</strike>
-							{% endwith %}
-							{% endwith %}
-
-							{% endif %}
-							{% endcomment %}
 							Price:
 							<span class="text-color-2">{{ medicine.price|floatformat:2 }} BDT</span>
 						</h5>

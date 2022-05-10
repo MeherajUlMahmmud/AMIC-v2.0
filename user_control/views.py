@@ -13,13 +13,8 @@ from user_control.forms import *
 from user_control.utils import calculate_age
 
 
-@unauthenticated_user  # this decorator will ensure that the user is logged in before they can access this view
-def home_view(request):  # The home page
-    """
-    This view will render the home page.
-    :param request:
-    :return: renders the home page
-    """
+@unauthenticated_user
+def home_view(request):
     return render(request, "index.html")
 
 

@@ -11,18 +11,13 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('article_control', '0001_initial'),
+        ('pathology_control', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='articlemodel',
-            name='author',
+            model_name='testmodel',
+            name='user',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.AddField(
-            model_name='articlemodel',
-            name='category',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='article_control.articlecategorymodel'),
         ),
     ]

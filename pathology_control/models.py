@@ -20,7 +20,7 @@ class TestModel(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     test_type = models.ForeignKey(TestTypeModel, on_delete=models.CASCADE)
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default="P")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="Pending")
     date = models.DateField()
     patient_name = models.CharField(max_length=100)
     gender = models.CharField(

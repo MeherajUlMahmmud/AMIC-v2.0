@@ -4,10 +4,6 @@ from user_control.models import PatientModel
 
 
 class OTScheduleModel(models.Model):
-    """
-    Model for OT Schedule
-    """
-
     patient = models.ForeignKey(PatientModel, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
