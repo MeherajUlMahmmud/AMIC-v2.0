@@ -31,16 +31,13 @@
                     {% csrf_token %}
 
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Patient Name</label>
                                 {{ form.patient_name|add_class:"form-control" }}
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Gender</label>
                                 {{ form.gender|add_class:"form-control" }}
@@ -49,16 +46,13 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Blood Group</label>
                                 {{ form.blood_group|add_class:"form-control" }}
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Quantity</label>
                                 {{ form.quantity|add_class:"form-control" }}
@@ -85,16 +79,13 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Needed Within</label>
                                 {{ form.needed_within|add_class:"form-control" }}
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Phone</label>
                                 {{ form.phone|add_class:"form-control" }}

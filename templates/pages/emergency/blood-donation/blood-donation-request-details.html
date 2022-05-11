@@ -115,11 +115,13 @@
                                 {{ post.location }}
                             </span>
                         </h4>
+                        {% if post.note %}
                         <h4>Note:
                             <span class="text-color-2">
                                 {{ post.note }}
                             </span>
                         </h4>
+                        {% endif %}
                     </div>
                 </div>
 
