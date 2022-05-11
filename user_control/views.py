@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from appointment_control.models import AppointmentModel
 from article_control.models import ArticleModel
 from patient_community_control.models import CommunityPostModel
+from pharmacy_control.models import MedicineCartModel
 from emergency_service_control.models import BloodRequestModel, PlasmaRequestModel
 from user_control.decorators import *
 from user_control.forms import *
@@ -66,6 +67,7 @@ def doctor_signup_view(request):
             user.is_doctor = True
             user.save()
             DoctorModel.objects.create(user=user)
+            MedicineCartModel.objects.create(user=user)
             login(request, user)
             return redirect("doctor-dashboard")
         else:
@@ -90,6 +92,7 @@ def patient_signup_view(request):
             user.is_patient = True
             user.save()
             PatientModel.objects.create(user=user)
+            MedicineCartModel.objects.create(user=user)
             login(request, user)
             return redirect("patient-dashboard")
         else:
