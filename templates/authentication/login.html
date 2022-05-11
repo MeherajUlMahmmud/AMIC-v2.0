@@ -44,18 +44,17 @@
                     {% if form.non_field_errors %}
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <ul>
-                                {% for error in form.non_field_errors %}
-                                <li class="list-group-item-danger form-control rounded mr-5">{{ error }}</li>
-                                {% endfor %}
-                            </ul>
+                            {% for error in form.non_field_errors %}
+                            <span class="text-danger">{{ error }}</span>
+                            {% endfor %}
                         </div>
                     </div>
                     {% endif %}
 
                     <div class="text-center">
                         <button class="btn btn-main btn-round-full" type="submit">
-                            Log In <i class="fas fa-sign-in-alt"></i></button>
+                            Log In <i class="fas fa-sign-in-alt"></i>
+                        </button>
                     </div>
                 </form>
             </div>
