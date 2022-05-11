@@ -1,4 +1,5 @@
 import datetime
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from ot_control.forms import OTScheduleForm
 
@@ -6,6 +7,7 @@ from ot_control.models import OTScheduleModel
 from user_control.models import PatientModel, UserModel
 
 
+@login_required(login_url="login")
 def ot_booking_home_view(request):
     today = datetime.date.today()
     seven_days_later = today + datetime.timedelta(days=6)
@@ -23,6 +25,7 @@ def ot_booking_home_view(request):
     return render(request, "pages/ot/ot_booking_home.html", context)
 
 
+@login_required(login_url="login")
 def ot_booking_post_view(request):
     task = "Book Operation Theater"
     form = OTScheduleForm()
@@ -42,6 +45,7 @@ def ot_booking_post_view(request):
     return render(request, "pages/ot/ot_booking_create_update.html", context)
 
 
+@login_required(login_url="login")
 def update_ot_booking_view(request, pk):
     task = "Update Operation Theater Booking"
     booking = OTScheduleModel.objects.get(id=pk)
@@ -65,6 +69,7 @@ def update_ot_booking_view(request, pk):
     return render(request, "pages/ot/ot_booking_create_update.html", context)
 
 
+@login_required(login_url="login")
 def delete_ot_booking_view(request, pk):
     booking = OTScheduleModel.objects.get(id=pk)
 
@@ -84,6 +89,7 @@ def delete_ot_booking_view(request, pk):
     return render(request, "pages/ot/ot_booking_delete.html", context)
 
 
+@login_required(login_url="login")
 def ot_booking_detail_view(request, pk):
     booking = OTScheduleModel.objects.get(id=pk)
 
@@ -104,6 +110,7 @@ def ot_booking_detail_view(request, pk):
     return render(request, "pages/ot/ot_booking_detail.html", context)
 
 
+@login_required(login_url="login")
 def users_ot_booking_view(request, pk):
     user = UserModel.objects.get(id=pk)
     patient = PatientModel.objects.get(user=user)  # get patient

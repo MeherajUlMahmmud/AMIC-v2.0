@@ -8,6 +8,7 @@ from .forms import AddEditPostForm
 from .models import AdviceModel
 
 
+@login_required(login_url="login")
 def advisor_home_view(request):
     post_search = request.GET.get('q') # get the search term from the GET request
 

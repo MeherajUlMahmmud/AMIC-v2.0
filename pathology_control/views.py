@@ -23,6 +23,7 @@ def pathology_home_view(request):
     return render(request, "pages/pathology/pathology_home.html", context)
 
 
+@login_required(login_url="login")
 def pathology_post_view(request):
     task = "Book Pathology Test"
     form = TestBookingForm()
@@ -40,6 +41,7 @@ def pathology_post_view(request):
     return render(request, "pages/pathology/pathology_create_update.html", context)
 
 
+@login_required(login_url="login")
 def pathology_detail_view(request, pk):
     booking = TestModel.objects.get(id=pk)
     status = None
@@ -71,6 +73,7 @@ def pathology_detail_view(request, pk):
     return render(request, "pages/pathology/pathology_detail.html", context)
 
 
+@login_required(login_url="login")
 def update_pathology_view(request, pk):
     task = "Update Pathology Test Booking"
     booking = TestModel.objects.get(id=pk)
@@ -94,6 +97,7 @@ def update_pathology_view(request, pk):
     return render(request, "pages/pathology/pathology_create_update.html", context)
 
 
+@login_required(login_url="login")
 def delete_pathology_view(request, pk):
     booking = TestModel.objects.get(id=pk)
 
