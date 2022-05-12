@@ -28,9 +28,9 @@
 				<div class="row mb-5">
 					<div class="col-md-12 col-sm-12">
 						<div class="blog-content blog-details">
-							<h3>Do you want to delete
-								<u><a href="{% url 'ot-booking-detail' booking.id %}">
-										{{ booking.name }}</a></u> ?
+							<h3>Do you want to delete COVID test booking for
+								<u><a href="{% url 'covid-detail' booking.id %}">
+										{{ booking.patient_name }}</a></u> ?
 							</h3>
 							<div class="row">
 								<div class="col-md-12 col-sm-12">
@@ -40,7 +40,7 @@
 											<i class="fa fa-trash"></i>
 											<span>Delete</span>
 										</button>
-										<a href="{% url 'ot-booking-detail' booking.id %}"
+										<a href="{% url 'covid-detail' booking.id %}"
 											class="btn btn-secondary text-center">
 											<i class="fa fa-remove"></i>
 											<span>Cancel</span>

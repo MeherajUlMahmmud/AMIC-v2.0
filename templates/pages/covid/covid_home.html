@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} - Covid Tests{% endblock %}
+
+{% block content %}
+
+<section class="page-title bg-1">
+	<div class="overlay"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="block text-center">
+					<h1 class="text-capitalize mb-5 text-lg">Covid Test Bookings</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<div class="container mt-5 mb-5">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="d-flex justify-content-center">
+				<div class="">
+					<a href="{% url 'covid-post' %}" class="btn btn-main btn-round-full">
+						<i class="fa fa-plus"></i>
+						Book a Test
+					</a>
+				</div>
+			</div>
+			<hr />
+		</div>
+	</div>
+</div>
+
+
+
+<div class="container mb-5">
+	<!-- Tabs navs -->
+	<ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
+		<li class="nav-item" role="presentation">
+			<a class="nav-link h6 active" id="ex3-tab-1" data-toggle="tab" href="#ex3-tabs-1" role="tab"
+				aria-controls="ex3-tabs-1" aria-selected="true">Upcoming Tests ({{ upcoming_bookings_count }})</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link h6" id="ex3-tab-2" data-toggle="tab" href="#ex3-tabs-2" role="tab"
+				aria-controls="ex3-tabs-2" aria-selected="false">Pending Tests ({{ pending_bookings_count }})</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link h6" id="ex3-tab-3" data-toggle="tab" href="#ex3-tabs-3" role="tab"
+				aria-controls="ex3-tabs-2" aria-selected="false">
+				In Progress Tests ({{ in_progress_bookings_count }})
+			</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link h6" id="ex3-tab-4" data-toggle="tab" href="#ex3-tabs-4" role="tab"
+				aria-controls="ex3-tabs-3" aria-selected="false">Completed Tests ({{ completed_bookings_count }})</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link h6" id="ex3-tab-5" data-toggle="tab" href="#ex3-tabs-5" role="tab"
+				aria-controls="ex3-tabs-4" aria-selected="false">Rejected Tests ({{ rejected_bookings_count }})</a>
+		</li>
+	</ul>
+	<!-- Tabs navs -->
+
+	<!-- Tabs content -->
+	<div class="tab-content" id="ex2-content">
+		<div class="tab-pane fade show active" id="ex3-tabs-1" role="tabpanel" aria-labelledby="ex3-tab-1">
+			{% if not upcoming_bookings %}
+			<h3 class="mx-3">No Upcoming Tests</h3>
+			{% endif %}
+
+			<div class="row">
+				{% for booking in upcoming_bookings %}
+				<div class="col-lg-4">
+					<div class="card rounded border p-3">
+
+						<h4>Patient Name:
+							<span class="text-color-2 ">{{ booking.patient_name }}</span>
+						</h4>
+
+						<h4 class="my-2">Gender:
+							<span class="text-color-2 ">{{ booking.gender }}</span>
+						</h4>
+						<h4>Booked for <span class="text-color-2">{{ booking.date }}</span></h4>
+						<a href="{% url 'covid-detail' booking.id %}" class="btn btn-main my-2">See More</a>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="tab-pane fade" id="ex3-tabs-2" role="tabpanel" aria-labelledby="ex3-tab-2">
+			{% if not pending_bookings %}
+			<h3 class="mx-3">No Pending Tests</h3>
+			{% endif %}
+
+			<div class="row">
+				{% for booking in pending_bookings %}
+				<div class="col-lg-4">
+					<div class="card rounded border p-3">
+
+						<h4>Patient Name:
+							<span class="text-color-2 ">{{ booking.patient_name }}</span>
+						</h4>
+
+						<h4 class="my-2">Gender:
+							<span class="text-color-2 ">{{ booking.gender }}</span>
+						</h4>
+						<h4>Booked for <span class="text-color-2">{{ booking.date }}</span></h4>
+						<a href="{% url 'covid-detail' booking.id %}" class="btn btn-main my-2">See More</a>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="tab-pane fade" id="ex3-tabs-3" role="tabpanel" aria-labelledby="ex3-tab-3">
+			{% if not in_progress_bookings %}
+			<h3 class="mx-3">No In Progress Tests</h3>
+			{% endif %}
+
+			<div class="row">
+				{% for booking in in_progress_bookings %}
+				<div class="col-lg-4">
+					<div class="card rounded border p-3">
+
+						<h4>Patient Name:
+							<span class="text-color-2 ">{{ booking.patient_name }}</span>
+						</h4>
+
+						<h4 class="my-2">Gender:
+							<span class="text-color-2 ">{{ booking.gender }}</span>
+						</h4>
+						<h4>Booked for <span class="text-color-2">{{ booking.date }}</span></h4>
+						<a href="{% url 'covid-detail' booking.id %}" class="btn btn-main my-2">See More</a>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="tab-pane fade" id="ex3-tabs-4" role="tabpanel" aria-labelledby="ex3-tab-4">
+			{% if not completed_bookings %}
+			<h3 class="mx-3">No Completed Tests</h3>
+			{% endif %}
+
+			<div class="row">
+				{% for booking in completed_bookings %}
+				<div class="col-lg-4">
+					<div class="card rounded border p-3">
+
+						<h4>Patient Name:
+							<span class="text-color-2 ">{{ booking.patient_name }}</span>
+						</h4>
+
+						<h4 class="my-2">Gender:
+							<span class="text-color-2 ">{{ booking.gender }}</span>
+						</h4>
+						<h4>Booked for <span class="text-color-2">{{ booking.date }}</span></h4>
+						<a href="{% url 'covid-detail' booking.id %}" class="btn btn-main my-2">See More</a>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="tab-pane fade" id="ex3-tabs-5" role="tabpanel" aria-labelledby="ex3-tab-5">
+			{% if not rejected_bookings %}
+			<h3 class="mx-3">No Rejected Tests</h3>
+			{% endif %}
+
+			<div class="row">
+				{% for booking in rejected_bookings %}
+				<div class="col-lg-4">
+					<div class="card rounded border p-3">
+
+						<h4>Patient Name:
+							<span class="text-color-2 ">{{ booking.patient_name }}</span>
+						</h4>
+
+						<h4 class="my-2">Gender:
+							<span class="text-color-2 ">{{ booking.gender }}</span>
+						</h4>
+						<h4>Booked for <span class="text-color-2">{{ booking.date }}</span></h4>
+						<a href="{% url 'covid-detail' booking.id %}" class="btn btn-main my-2">See More</a>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	<!-- Tabs content -->
+</div>
+
+
+<section class="section cta-page">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-7">
+				<div class="cta-content">
+					<div class="divider mb-4"></div>
+					<h2 class="mb-5 text-lg">We are pleased to offer you the <span class="title-color">chance to have a
+							healthy life</span>
+					</h2>
+					<a href="{% url 'home' %}" class="btn btn-main-2 btn-round-full">
+						Book a Test<i class="icofont-simple-right ml-2"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+{% endblock %}

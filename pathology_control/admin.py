@@ -10,10 +10,11 @@ class TestModelAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "test_type",
+        "status",
+        "date",
         "created_at",
-        "updated_at",
     )
-    list_filter = ["test_type"]
+    list_filter = ["test_type", "status"]
     search_fields = ["name"]
     list_per_page = 30
     ordering = ["-created_at"]

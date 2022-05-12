@@ -1,10 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 
     <title>Prescription</title>
 
@@ -63,37 +62,35 @@
             margin: 0;
             height: 5px;
         }
-
-
     </style>
 </head>
 
 <body style="background-color: #FFFFFF;">
 
-<div id="page-wrap">
+    <div id="page-wrap">
 
-    <h1 style="text-align: center; font-size: 20px;">AMIC</h1>
-    <div class="vcard" id="contact-info">
-        <p style="font-size: 16px;">
-            <b>Name: </b>{{ appointment.patient.user.name }}
-            <b>Age: </b>{{ age }}
-            <b>Gender: </b>{{ appointment.patient.gender }}<br/><br/>
-            <b>Issue Date: </b>{{ prescription.created_on }}<br/><br/>
-            <b>Issued By: </b>{{ appointment.doctor.user.name }} ({{ appointment.doctor.specialization }})
-        </p>
+        <h1 style="text-align: center; font-size: 20px;">AMIC</h1>
+        <div class="vcard" id="contact-info">
+            <p style="font-size: 16px;">
+                <b>Name: </b>{{ appointment.patient.user.name }}
+                <b>Age: </b>{{ age }}
+                <b>Gender: </b>{{ appointment.patient.gender }}<br /><br />
+                <b>Issue Date: </b>{{ prescription.created_at }}<br /><br />
+                <b>Issued By: </b>{{ appointment.doctor.user.name }} ({{ appointment.doctor.specialization }})
+            </p>
+        </div>
+        <hr />
+
+        <dl>
+            <dd class="clear"></dd>
+            <dd>
+                <h2>
+                    {{ prescription.details|linebreaks }}
+                </h2>
+            </dd>
+        </dl>
+
     </div>
-    <hr/>
-
-    <dl>
-        <dd class="clear"></dd>
-        <dd>
-            <h2>
-                {{ prescription.details|linebreaks }}
-            </h2>
-        </dd>
-    </dl>
-
-</div>
 
 </body>
 

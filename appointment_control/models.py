@@ -18,23 +18,24 @@ class AppointmentModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.patient.name, "appointment with", self.doctor.name
+        return self.patient.user.name, "appointment with", self.doctor.user.name
 
     class Meta:
-        verbose_name = 'Appointment'
-        verbose_name_plural = 'Appointments'
+        verbose_name = "Appointment"
+        verbose_name_plural = "Appointments"
 
 
 class PrescriptionModel(models.Model):
     appointment = models.ForeignKey(
-        AppointmentModel, on_delete=models.SET_NULL, null=True, blank=True)
+        AppointmentModel, on_delete=models.SET_NULL, null=True, blank=True
+    )
     details = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.appointment.patient.name, "prescription"
+        return self.appointment.patient.user.name, "prescription"
 
     class Meta:
-        verbose_name = 'Prescription'
-        verbose_name_plural = 'Prescriptions'
+        verbose_name = "Prescription"
+        verbose_name_plural = "Prescriptions"

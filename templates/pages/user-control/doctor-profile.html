@@ -151,7 +151,7 @@
 
         {% if total_posts > 4 %}
         <div>
-            <a href="#" class="btn btn-main-2 btn-round-full mt-3">
+            <a href="{% url 'users-articles' profile.user.id %}" class="btn btn-main-2 btn-round-full mt-3">
                 See More Posts <i class="fas fa-arrow-right"></i>
             </a>
         </div>

@@ -17,6 +17,20 @@ class UserModelAdmin(UserAdmin):
     readonly_fields = ("date_joined", "last_login")
     list_per_page = 30
     ordering = ("email",)
+    fieldsets = (
+        (
+            "User",
+            {"fields": ("email", "password")},
+        ),
+        (
+            "Personal info",
+            {"fields": ("name", "date_joined", "last_login")},
+        ),
+        (
+            "Permissions",
+            {"fields": ("is_admin", "is_doctor", "is_patient")},
+        ),
+    )
     list_filter = ("is_admin", "is_active", "is_doctor", "is_patient")
 
 

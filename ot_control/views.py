@@ -13,9 +13,7 @@ def ot_booking_home_view(request):
     seven_days_later = today + datetime.timedelta(days=6)
     bookings = OTScheduleModel.objects.filter(
         date__range=[today, seven_days_later]
-    ).order_by(
-        "date"
-    )  # get all bookings within the next 7 days
+    ).order_by("date")
 
     context = {
         "bookings": bookings,
@@ -50,11 +48,8 @@ def update_ot_booking_view(request, pk):
     task = "Update Operation Theater Booking"
     booking = OTScheduleModel.objects.get(id=pk)
 
-    # check if the user is the owner of the booking
-    if (
-        request.user != booking.patient.user and booking.status != "Pending"
-    ):  # if the user is not the owner of the booking
-        return redirect("ot-booking-detail", pk)  # redirect to detail page
+    if request.user != booking.patient.user and booking.status != "Pending":
+        return redirect("ot-booking-detail", pk)
 
     form = OTScheduleForm(instance=booking)
     if request.method == "POST":
@@ -73,11 +68,8 @@ def update_ot_booking_view(request, pk):
 def delete_ot_booking_view(request, pk):
     booking = OTScheduleModel.objects.get(id=pk)
 
-    # check if the user is the owner of the booking
-    if (
-        request.user != booking.patient.user and booking.status != "Pending"
-    ):  # if the user is not the owner of the booking
-        return redirect("ot-booking-detail", pk)  # redirect to detail page
+    if request.user != booking.patient.user and booking.status != "Pending":
+        return redirect("ot-booking-detail", pk)
 
     if request.method == "POST":
         booking.delete()
@@ -93,12 +85,10 @@ def delete_ot_booking_view(request, pk):
 def ot_booking_detail_view(request, pk):
     booking = OTScheduleModel.objects.get(id=pk)
 
-    # check if the user is the owner of the booking
     my_booking = False
     if request.user == booking.patient.user:
         my_booking = True
 
-    # check if the booking is in the future
     is_pending = False
     if booking.status == "Pending":
         is_pending = True
@@ -113,10 +103,8 @@ def ot_booking_detail_view(request, pk):
 @login_required(login_url="login")
 def users_ot_booking_view(request, pk):
     user = UserModel.objects.get(id=pk)
-    patient = PatientModel.objects.get(user=user)  # get patient
-    bookings = OTScheduleModel.objects.filter(patient=patient).order_by(
-        "date"
-    )  # get all bookings for the patient
+    patient = PatientModel.objects.get(user=user)
+    bookings = OTScheduleModel.objects.filter(patient=patient).order_by("date")
     context = {
         "bookings": bookings,
     }
